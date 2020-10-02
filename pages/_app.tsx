@@ -1,20 +1,44 @@
-import '../styles/globals.css'
-import type { AppProps /*, AppContext */ } from 'next/app'
+import React from 'react'
+import App from 'next/app'
 
-function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+import '../styles/globals.css'
+import { AppProvider } from 'src/context/App'
+import { buildMenuItems } from 'src/util/props'
+import { IMenuItem, IMenuItemResult } from 'src/types'
+import { getData } from 'src/util/fetch'
+import { ContentfulCollection } from 'contentful'
+
+interface IPageProps {
+  menuItems: IMenuItem[]
 }
 
-// Only uncomment this method if you have blocking data requirements for
-// every single page in your application. This disables the ability to
-// perform automatic static optimization, causing every page in your app to
-// be server-side rendered.
-//
-// MyApp.getInitialProps = async (appContext: AppContext) => {
-//   // calls page's `getInitialProps` and fills `appProps.pageProps`
-//   const appProps = await App.getInitialProps(appContext);
+class Application extends App<IPageProps> {
+  render() {
+    const {
+      Component,
+      pageProps,
+      pageProps: { menuItems },
+    } = this.props
 
-//   return { ...appProps }
-// }
+    return (
+      <AppProvider menuItems={menuItems}>
+        <Component {...pageProps} />
+      </AppProvider>
+    )
+  }
+}
 
-export default App
+Application.getInitialProps = async (appContext) => {
+  const appProps = await App.getInitialProps(appContext)
+
+  const menu = await getData<ContentfulCollection<IMenuItemResult>>('menu/main')
+  return {
+    ...appProps,
+    pageProps: {
+      ...appProps.pageProps,
+      menuItems: buildMenuItems(menu.items),
+    },
+  }
+}
+
+export default Application

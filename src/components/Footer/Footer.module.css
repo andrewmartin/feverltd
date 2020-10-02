@@ -1,0 +1,16 @@
+.footerNav {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  text-align: center;
+}
+
+.footerNav li {
+  display: inline-block;
+  margin: 0 15px;
+}
+
+.footerNav li a {
+  text-decoration: none;
+  text-transform: uppercase;
+}

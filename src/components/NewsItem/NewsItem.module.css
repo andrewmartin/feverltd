@@ -1,0 +1,14 @@
+.newsItem {
+  text-transform: uppercase;
+  text-align: center;
+  padding: 0 0 100px;
+}
+
+.newsItem:before {
+  content: '';
+  display: inline-block;
+  background: white;
+  width: 30%;
+  height: 12px;
+  margin: 0 0 50px;
+}
