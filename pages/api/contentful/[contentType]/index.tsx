@@ -1,7 +1,7 @@
 import { IncomingMessage } from 'http'
 import { contentfulClient } from 'src/api/contentful'
 import { NextIncomingMessageArgs } from 'src/types'
-import { buildItemData } from 'src/util/contentful'
+import { buildItemsData } from 'src/util/contentful'
 
 async function handler(
   req: IncomingMessage &
@@ -21,7 +21,7 @@ async function handler(
       } as any
 
       const entries = await contentfulClient.getEntries(args)
-      entries.items = buildItemData(entries.items)
+      entries.items = buildItemsData(entries.items)
 
       return res.json(entries)
     } catch (error) {

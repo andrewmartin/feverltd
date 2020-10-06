@@ -1,0 +1,31 @@
+.container {
+  margin: 0 auto;
+  width: 90%;
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+}
+
+.pageContent {
+  padding: 0 0 100px;
+}
+
+.pageContent p {
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.pageTitle {
+  font-size: 40px;
+  line-height: 1.5;
+  margin: 0 0 50px;
+}
+
+.pageContent:before {
+  content: '';
+  display: inline-block;
+  background: white;
+  width: 50%;
+  height: 12px;
+  margin: 0 0 50px;
+}

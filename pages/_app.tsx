@@ -1,44 +1,44 @@
 import React from 'react'
-import App from 'next/app'
 
-import '../styles/globals.css'
+import type { AppContext, AppProps } from 'next/app'
 import { AppProvider } from 'src/context/App'
-import { buildMenuItems } from 'src/util/props'
+import { ContentfulCollection } from 'contentful'
 import { IMenuItem, IMenuItemResult } from 'src/types'
 import { getData } from 'src/util/fetch'
-import { ContentfulCollection } from 'contentful'
+import { buildMenuItems } from 'src/util/props'
+
+import '../styles/globals.css'
 
 interface IPageProps {
   menuItems: IMenuItem[]
 }
 
-class Application extends App<IPageProps> {
-  render() {
-    const {
-      Component,
-      pageProps,
-      pageProps: { menuItems },
-    } = this.props
+function MyApp(props: AppProps<IPageProps>) {
+  const { Component, pageProps } = props
 
-    return (
-      <AppProvider menuItems={menuItems}>
-        <Component {...pageProps} />
-      </AppProvider>
-    )
-  }
+  return (
+    <AppProvider menuItems={pageProps.menuItems}>
+      <Component {...pageProps} />
+    </AppProvider>
+  )
 }
 
-Application.getInitialProps = async (appContext) => {
-  const appProps = await App.getInitialProps(appContext)
-
+MyApp.getInitialProps = async (appContext: AppContext) => {
   const menu = await getData<ContentfulCollection<IMenuItemResult>>('menu/main')
+  //   const appProps = await App.getInitialProps(appContext)
+
+  let pageProps
+
+  if (appContext.Component.getInitialProps) {
+    pageProps = await appContext.Component.getInitialProps(appContext.ctx)
+  }
+
   return {
-    ...appProps,
     pageProps: {
-      ...appProps.pageProps,
-      menuItems: buildMenuItems(menu.items),
+      ...pageProps,
+      menuItems: buildMenuItems(menu?.items),
     },
   }
 }
 
-export default Application
+export default MyApp

@@ -1,6 +1,6 @@
 import fetch from 'isomorphic-unfetch'
 
-const API_ROOT = `${process.env.NEXT_SITE_ROOT}/api/contentful/`
+const API_ROOT = `${process.env.NEXT_PUBLIC_SITE_ROOT}/api/contentful/`
 
 export const getData = async <T>(path: string): Promise<T> => {
   const URL = `${API_ROOT}${path}`

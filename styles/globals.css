@@ -26,12 +26,63 @@ body {
 a {
   color: inherit;
   text-decoration: underline;
+  position: relative;
 }
 
 a:hover {
   text-decoration: none;
 }
 
+a:after {
+  background: none repeat scroll 0 0 transparent;
+  bottom: 0;
+  content: '';
+  display: block;
+  height: 2px;
+  left: 50%;
+  position: absolute;
+  transition: width 0.3s ease 0s, left 0.3s ease 0s;
+  width: 0;
+}
+
+a:hover:after {
+  width: 100%;
+  left: 0;
+}
+
 * {
   box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 0 0 1.4rem;
+}
+
+h2 {
+  margin: 0 0 1.4rem;
+}
+
+h3 {
+  margin: 0 0 1.4rem;
+}
+
+h4 {
+  margin: 0 0 1.4rem;
+}
+
+h5 {
+  margin: 0 0 1.4rem;
+}
+
+h6 {
+  margin: 0 0 1.4rem;
 }

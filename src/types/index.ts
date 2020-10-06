@@ -28,7 +28,17 @@ export interface IMenuItemResult {
   menuItems: Entry<IMenuItem>[]
 }
 
-export interface INewsItem {
+interface ContentfulSysFields {
+  createdAt: string
+  id: string
+}
+
+export interface INewsItem extends ContentfulSysFields {
+  title: string
+  body: string
+}
+
+export interface IPageItem extends ContentfulSysFields {
   title: string
   body: string
 }
