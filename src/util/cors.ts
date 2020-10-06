@@ -5,7 +5,7 @@ import Cors from 'cors'
 export default function initMiddleware(middleware: any) {
   return (req: any, res: Response) =>
     new Promise((resolve, reject) => {
-      middleware(req, res, (result) => {
+      middleware(req, res, (result: any) => {
         if (result instanceof Error) {
           return reject(result)
         }
