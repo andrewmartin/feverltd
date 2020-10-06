@@ -2,6 +2,7 @@ import { IncomingMessage } from 'http'
 import { contentfulClient } from 'src/api/contentful'
 import { NextIncomingMessageArgs } from 'src/types'
 import { buildItemData } from 'src/util/contentful'
+import { cors } from 'src/util/cors'
 
 async function handler(
   req: IncomingMessage &
@@ -14,6 +15,8 @@ async function handler(
   const {
     query: { id },
   } = req
+
+  await cors(req, res)
 
   if (req.method === 'GET') {
     try {
