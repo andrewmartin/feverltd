@@ -49,6 +49,8 @@ export const Layout: React.FC<{
         <meta name="msapplication-square150x150logo" content="/mstile-150x150.png" />
         <meta name="msapplication-wide310x150logo" content="/mstile-310x150.png" />
         <meta name="msapplication-square310x310logo" content="/mstile-310x310.png" />
+        {/* REMOVE THIS!!! */}
+        <meta name="robots" content="NOINDEX,NOFOLLOW" />
       </Head>
       <div className={`content ${className}`}>
         <Header />
