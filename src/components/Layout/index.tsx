@@ -49,8 +49,12 @@ export const Layout: React.FC<{
         <meta name="msapplication-square150x150logo" content="/mstile-150x150.png" />
         <meta name="msapplication-wide310x150logo" content="/mstile-310x150.png" />
         <meta name="msapplication-square310x310logo" content="/mstile-310x310.png" />
-        {/* REMOVE THIS!!! */}
-        <meta name="robots" content="NOINDEX,NOFOLLOW" />
+        <meta property="og:image" content="/feverltd_favicon.jpg.jpg" />
+        <meta property="og:image:type" content="image/jpeg" />
+        <meta property="og:image:width" content="500" />
+        <meta property="og:image:height" content="500" />
+        <meta property="og:image:alt" content="FEVER LTD: NOISE AND CULTURE" />
+        <meta property="og:title" content="FEVER LTD: NOISE AND CULTURE" />
       </Head>
       <div className={`content ${className}`}>
         <Header />
