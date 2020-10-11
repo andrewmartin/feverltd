@@ -33,6 +33,7 @@ const options: Options = {
     [BLOCKS.EMBEDDED_ASSET]: (node) =>
       `<custom-component>${JSON.stringify(node)}</custom-component>`,
     [INLINES.EMBEDDED_ENTRY]: renderEmbeddedEntryContent,
+    [BLOCKS.PARAGRAPH]: (node, next) => `<p>${next(node.content).replace(/\n/g, `</br>`)}</p>`,
   },
 }
 
