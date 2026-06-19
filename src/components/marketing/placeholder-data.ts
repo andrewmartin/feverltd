@@ -22,10 +22,12 @@ function makeArtist(name: string, slug: string): Artist {
 }
 
 export const PLACEHOLDER_ARTISTS: Artist[] = [
-  makeArtist("Static Bloom", "static-bloom"),
-  makeArtist("Nightporter", "nightporter"),
-  makeArtist("VHS Dreams", "vhs-dreams"),
-  makeArtist("The Low Hum", "the-low-hum"),
+  makeArtist("Mascara", "mascara"),
+  makeArtist("Teenage Wrist", "teenage-wrist"),
+  makeArtist("Muted Color", "muted-color"),
+  makeArtist("The Chain Gang of 1974", "the-chain-gang-of-1974"),
+  makeArtist("Valley of Doves", "valley-of-doves"),
+  makeArtist("Fly Over States", "fly-over-states"),
 ];
 
 function makeRelease(
@@ -52,10 +54,10 @@ function makeRelease(
 }
 
 export const PLACEHOLDER_RELEASES: ReleaseWithArtist[] = [
-  makeRelease("Half-Light", "half-light", "FVR001", PLACEHOLDER_ARTISTS[0], 2024),
-  makeRelease("Radio Silence", "radio-silence", "FVR002", PLACEHOLDER_ARTISTS[1], 2024),
-  makeRelease("Tape Hiss", "tape-hiss", "FVR003", PLACEHOLDER_ARTISTS[2], 2025),
-  makeRelease("Undertow", "undertow", "FVR004", PLACEHOLDER_ARTISTS[3], 2025),
-  makeRelease("Neon Fade", "neon-fade", "FVR005", PLACEHOLDER_ARTISTS[2], 2025),
-  makeRelease("Slow Burn", "slow-burn", "FVR006", PLACEHOLDER_ARTISTS[0], 2026),
+  makeRelease("Going Postal", "going-postal", "FEV009", PLACEHOLDER_ARTISTS[0], 2026),
+  makeRelease("Dazed (2025 Remaster)", "dazed-2025-remaster", "FEV004", PLACEHOLDER_ARTISTS[1], 2025),
+  makeRelease("Take I Lovely You", "take-i-lovely-you", "FEV007", PLACEHOLDER_ARTISTS[2], 2025),
+  makeRelease("Honey Moon Drips", "honey-moon-drips", "FEV005", PLACEHOLDER_ARTISTS[3], 2025),
+  makeRelease("Constant Remembrance of Wanting Nothing", "constant-remembrance-of-wanting-nothing", "FEV010", PLACEHOLDER_ARTISTS[4], 2026),
+  makeRelease("Ghosts", "ghosts", "FEV001", PLACEHOLDER_ARTISTS[5], 2024),
 ];
