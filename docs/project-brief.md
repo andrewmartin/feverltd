@@ -145,6 +145,38 @@ legit" — with a polished, professional record-label site that drives sales.
 - Where the current site is actually **hosted** (client unsure beyond GoDaddy
   domain + DigitalOcean).
 
+## 10. Artists & Catalog Reference
+
+> Pulled from the Big Cartel store (`feverltd.bigcartel.com`) on Jun 19, 2026.
+> These are the **physical** releases only; not every release has a physical
+> component. Use as reference for seeding Artists and Releases.
+
+### Artists (8)
+
+1. Mascara
+2. Valley of Doves
+3. Teenage Wrist
+4. Chain Gang of 1974
+5. Muted Color
+6. Fly Over States
+7. En Masse
+8. Dogs Run Free
+
+### Physical releases (10)
+
+| Artist | Release | Format | Notes |
+| :--- | :--- | :--- | :--- |
+| Mascara | _Going Postal_ | Vinyl | |
+| Valley of Doves | _Constant Remembrance of Wanting Nothing_ | CD | |
+| Teenage Wrist | _Dazed (2025 Remaster)_ | Vinyl | 2 color variants: Neon Green/Black Swirl (sold out), Opaque Neon Green |
+| Chain Gang of 1974 | _Honey Moon Drips_ | Vinyl | Signed + unsigned editions |
+| Chain Gang of 1974 | _Besides/Pollen_ | Vinyl | |
+| Muted Color | _Take I Lovely You_ | Vinyl | |
+| Muted Color | _Radial_ | Tape | |
+| Fly Over States | _Ghosts_ | CD | |
+| En Masse | _newviolenttrends_ | CD | Sold out |
+| Dogs Run Free | _Normal_ | Tape | Sold out |
+
 ---
 
 _Sources: `Fever LTD - Discovery.md` (discovery questionnaire),
