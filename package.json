@@ -3,16 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
-    "start": "next start",
+    "dev": "PATH=\"/opt/homebrew/bin:$PATH\" next dev --turbopack -p 7878",
+    "build": "PATH=\"/opt/homebrew/bin:$PATH\" next build --turbopack",
+    "start": "PATH=\"/opt/homebrew/bin:$PATH\" next start -p 7878",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "postinstall": "prisma generate",
     "db:generate": "prisma generate",
-    "db:push": "prisma db push",
-    "db:migrate": "prisma migrate dev",
-    "db:studio": "prisma studio",
+    "db:push": "PATH=\"/opt/homebrew/bin:$PATH\" prisma db push",
+    "db:migrate": "PATH=\"/opt/homebrew/bin:$PATH\" prisma migrate dev",
+    "db:studio": "PATH=\"/opt/homebrew/bin:$PATH\" prisma studio",
     "db:seed": "bun run prisma/seed.ts"
   },
   "dependencies": {
