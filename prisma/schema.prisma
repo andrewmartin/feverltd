@@ -1,13 +1,16 @@
 // Fever Ltd — Prisma schema
-// Postgres. On Vercel, provision Neon via the Marketplace.
+// Postgres on Neon (Vercel Marketplace). The Neon integration injects the
+// connection strings with a `FEVER_` prefix; `POSTGRES_PRISMA_URL` is the
+// pooled (pgbouncer) URL for the client, `POSTGRES_URL_NON_POOLING` is the
+// direct URL used for migrations / introspection.
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  url       = env("FEVER_POSTGRES_PRISMA_URL")
+  directUrl = env("FEVER_POSTGRES_URL_NON_POOLING")
 }
 
 // ---------------------------------------------------------------------------
