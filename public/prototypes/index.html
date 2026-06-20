@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fever LTD — Homepage Concepts</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
+  <style>
+    :root { --red:#c6352f; --ink:#171513; --paper:#FAF8F4; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Bricolage Grotesque',sans-serif; background:var(--paper); color:var(--ink); -webkit-font-smoothing:antialiased; padding:7vw 6vw; }
+    .eyebrow { font-family:'Fraunces',serif; font-style:italic; font-size:1rem; color:var(--red); margin-bottom:1rem; }
+    h1 { font-size:clamp(2.8rem,7vw,6rem); font-weight:800; line-height:0.95; letter-spacing:-0.02em; max-width:14ch; }
+    h1 .f { color:var(--red); }
+    p.lede { font-family:'Fraunces',serif; font-size:1.25rem; max-width:52ch; margin-top:1.5rem; line-height:1.5; color:#4a443e; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.5rem; margin-top:4rem; }
+    a.card { display:block; text-decoration:none; color:var(--ink); border:1px solid rgba(23,21,19,.18); padding:2rem; transition:.25s; background:#fff; }
+    a.card:hover { border-color:var(--red); transform:translateY(-4px); }
+    .tag { font-family:'Fraunces',serif; font-style:italic; color:var(--red); font-size:.95rem; }
+    .card h2 { font-size:1.9rem; font-weight:800; margin:.6rem 0; letter-spacing:-0.01em; }
+    .card .meta { font-size:.85rem; line-height:1.6; color:#6a635c; }
+    .card .meta b { color:var(--ink); font-weight:600; }
+    .card .open { margin-top:1.4rem; font-weight:600; font-size:.9rem; }
+    .card:hover .open { color:var(--red); }
+    .open::after { content:" →"; }
+    footer { margin-top:4rem; font-family:'Fraunces',serif; font-style:italic; color:#8a837c; font-size:.9rem; }
+  </style>
+</head>
+<body>
+  <div class="eyebrow">Fever LTD · Homepage concepts · June 2026</div>
+  <h1><span class="f">Three</span> directions for the homepage.</h1>
+  <p class="lede">Each is an independent, static prototype built on the same real artists and releases — so the comparison is about look and feel, not content. Open any one full-screen, then we narrow to a direction.</p>
+
+  <div class="grid">
+    <a class="card" href="a-editorial-white.html">
+      <span class="tag">A — Editorial White</span>
+      <h2>Gallery</h2>
+      <p class="meta"><b>Bright, clean, white + red.</b> A full-screen rotating artist hero, Sunday-Drive style. Bricolage Grotesque + Fraunces. Sharp corners, hairline rules, lots of air. The photos are the only color.</p>
+      <div class="open">View concept A</div>
+    </a>
+    <a class="card" href="b-dark-moody.html">
+      <span class="tag">B — Dark Moody</span>
+      <h2>After Midnight</h2>
+      <p class="meta"><b>Near-black, photographic, glowing.</b> A restrained, contained artist carousel with a mono index, now under a broadsheet-style masthead (topline → big logo → ruled nav). Space Grotesk + Spectral + Space Mono. Red as a signal light. Switcher toggles a <b>light scheme</b> too. Premium-underground.</p>
+      <div class="open">View concept B</div>
+    </a>
+    <a class="card" href="c-broadsheet.html">
+      <span class="tag">C — Broadsheet Bold</span>
+      <h2>Front Page</h2>
+      <p class="meta"><b>High-contrast print energy.</b> An editorial split/masthead hero with ruled grid. Archivo (black) + DM Serif Display. Black + red with an acid spot highlight. Loud but disciplined.</p>
+      <div class="open">View concept C</div>
+    </a>
+    <a class="card" href="d-press-gallery.html">
+      <span class="tag">D — Pressroom</span>
+      <h2>Gallery Press</h2>
+      <p class="meta"><b>Warm paper, ink &amp; red — light, but with teeth.</b> Borrows B's masthead and carousel, reworked light and artsy-punk: all-caps condensed headings (the Fever store cue), a fill+outline word mix with a red period, baseline rules and a mono ticker. Museum-placard release cards. Big Shoulders + Fraunces, with a Syne/Gallery option; scheme flips to dark.</p>
+      <div class="open">View concept D</div>
+    </a>
+  </div>
+
+  <footer>Static prototypes · mock content · for direction-setting only.</footer>
+</body>
+</html>

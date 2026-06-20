@@ -1,5 +1,5 @@
 import { ReleaseStatus, type Artist } from "@prisma/client";
-import type { ReleaseWithArtist } from "@/lib/catalog";
+import type { ReleaseWithArtists } from "@/lib/catalog";
 
 /**
  * Curated fallback content used when the database is empty or unreachable,
@@ -36,7 +36,7 @@ function makeRelease(
   catalogNo: string,
   artist: Artist,
   year: number,
-): ReleaseWithArtist {
+): ReleaseWithArtists {
   return {
     id: `placeholder-release-${slug}`,
     title,
@@ -46,14 +46,13 @@ function makeRelease(
     coverUrl: null,
     releaseDate: new Date(`${year}-01-01`),
     status: ReleaseStatus.PUBLISHED,
-    artistId: artist.id,
-    artist,
+    artists: [artist],
     createdAt: now,
     updatedAt: now,
   };
 }
 
-export const PLACEHOLDER_RELEASES: ReleaseWithArtist[] = [
+export const PLACEHOLDER_RELEASES: ReleaseWithArtists[] = [
   makeRelease("Going Postal", "going-postal", "FEV009", PLACEHOLDER_ARTISTS[0], 2026),
   makeRelease("Dazed (2025 Remaster)", "dazed-2025-remaster", "FEV004", PLACEHOLDER_ARTISTS[1], 2025),
   makeRelease("Take I Lovely You", "take-i-lovely-you", "FEV007", PLACEHOLDER_ARTISTS[2], 2025),

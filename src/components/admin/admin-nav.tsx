@@ -2,12 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { LayoutDashboardIcon, UsersIcon, DiscIcon, NewspaperIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const links = [
-  { href: "/admin", label: "Dashboard", exact: true },
-  { href: "/admin/artists", label: "Artists", exact: false },
-  { href: "/admin/releases", label: "Releases", exact: false },
+  { href: "/admin", label: "Dashboard", icon: LayoutDashboardIcon, exact: true },
+  { href: "/admin/artists", label: "Artists", icon: UsersIcon, exact: false },
+  { href: "/admin/releases", label: "Releases", icon: DiscIcon, exact: false },
+  { href: "/admin/news", label: "News", icon: NewspaperIcon, exact: false },
 ];
 
 export function AdminNav() {
@@ -19,18 +21,20 @@ export function AdminNav() {
         const active = link.exact
           ? pathname === link.href
           : pathname === link.href || pathname.startsWith(`${link.href}/`);
+        const Icon = link.icon;
         return (
           <Link
             key={link.href}
             href={link.href}
             aria-current={active ? "page" : undefined}
             className={cn(
-              "rounded-md px-3 py-2 text-sm font-medium transition-colors",
+              "flex items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium transition-colors",
               active
-                ? "bg-accent text-accent-foreground"
+                ? "bg-primary/10 text-primary"
                 : "text-muted-foreground hover:bg-muted hover:text-foreground",
             )}
           >
+            <Icon className="size-4" />
             {link.label}
           </Link>
         );

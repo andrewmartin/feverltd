@@ -11,10 +11,10 @@ import {
 } from "@/components/marketing/placeholder-data";
 import { getAllArtists, getFeaturedReleases } from "@/lib/catalog";
 import type { Artist } from "@prisma/client";
-import type { ReleaseWithArtist } from "@/lib/catalog";
+import type { ReleaseWithArtists } from "@/lib/catalog";
 
 export default async function Home() {
-  let releases: ReleaseWithArtist[] = [];
+  let releases: ReleaseWithArtists[] = [];
   let artists: Artist[] = [];
 
   try {

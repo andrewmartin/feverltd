@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<title>Fever LTD — Pressroom</title>
+<script>
+  /* set theme before first paint — saved choice, else OS preference (no FOUC) */
+  (function(){
+    try{
+      var s=localStorage.getItem('fever-theme');
+      var dark = s==='dark' || (!s && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+      document.documentElement.setAttribute('data-theme', dark?'dark':'light');
+    }catch(e){}
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,800&family=Big+Shoulders+Display:wght@400;500;600;700;800;900&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=DM+Serif+Display:ital@0;1&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Hanken+Grotesk:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* light-first — cool pressroom / newsprint grey */
+  --disp:"Big Shoulders Display",sans-serif;
+  --serif:"Fraunces",Georgia,serif;
+  --canvas:#E7E8E4;
+  --surface:#F4F5F2;
+  --hair:rgba(18,20,18,.15);
+  --rule:rgba(18,20,18,.86);
+  --ink:#15171A;
+  --text:#15171A;
+  --muted:#646862;
+  --red:#c6352f;
+  --cold:#3A4750;
+  --glow:rgba(198,53,47,.22);
+}
+/* dark scheme — toggled from the switcher (data-theme) */
+[data-theme="dark"]{
+  --canvas:#100E0C;
+  --surface:#1A1613;
+  --hair:rgba(239,233,222,.15);
+  --rule:rgba(239,233,222,.82);
+  --ink:#EFE9DE;
+  --text:#EFE9DE;
+  --muted:#9A938A;
+  --cold:#C8D3DB;
+  --glow:rgba(198,53,47,.45);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--canvas);
+  color:var(--text);
+  font-family:var(--serif);
+  font-weight:400;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+  transition:background .3s,color .3s;
+}
+::selection{background:var(--red);color:#fff}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+
+.mono{
+  font-family:"Space Mono",monospace;
+  text-transform:uppercase;
+  letter-spacing:.22em;
+  font-size:11px;
+  color:var(--muted);
+}
+.disp{font-family:var(--disp);}
+.pd{color:var(--red);}
+.wrap{max-width:1280px;margin:0 auto;padding:0 34px;}
+
+/* ---------------- HEADER (broadsheet masthead) ---------------- */
+header.masthead{
+  position:sticky;top:0;z-index:50;
+  background:var(--canvas);
+  border-bottom:2px solid var(--rule);
+}
+.topline{
+  display:flex;justify-content:space-between;align-items:center;gap:16px;
+  font-family:"Space Mono",monospace;
+  font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--muted);
+  padding:9px 0;
+  border-bottom:1px solid var(--hair);
+}
+.topline .est{color:var(--red);}
+.topline-right{display:flex;align-items:center;gap:14px;}
+.theme-toggle{
+  all:unset;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;
+  width:24px;height:20px;color:var(--muted);transition:color .18s,transform .25s;
+}
+.theme-toggle:hover{color:var(--ink);}
+.theme-toggle:active{transform:scale(.88);}
+.theme-toggle:focus-visible{outline:1px solid var(--red);outline-offset:3px;border-radius:3px;}
+.theme-toggle svg{width:14px;height:14px;display:block;}
+.theme-toggle .ic-moon{display:none;}
+[data-theme="dark"] .theme-toggle .ic-sun{display:none;}
+[data-theme="dark"] .theme-toggle .ic-moon{display:block;}
+.masthead-main{
+  display:flex;align-items:flex-end;justify-content:space-between;gap:24px;
+  padding:18px 0 16px;
+}
+.wordmark{
+  display:block;
+  height:clamp(40px,7.4vw,86px);
+  aspect-ratio:3456/452;
+  flex:0 1 auto;min-width:0;
+  background:currentColor;color:var(--ink);
+  -webkit-mask:url(fever-logo.svg) left bottom/contain no-repeat;
+  mask:url(fever-logo.svg) left bottom/contain no-repeat;
+  transition:color .25s;
+}
+.wordmark:hover{color:var(--red);}
+.masthead-tag{text-align:right;max-width:264px;padding-bottom:6px;}
+.masthead-tag .serif{
+  font-family:var(--serif);
+  font-size:clamp(13px,1.5vw,16px);
+  line-height:1.24;font-style:italic;color:var(--muted);
+}
+.navbar{
+  display:flex;align-items:center;justify-content:space-between;
+  border-top:1px solid var(--rule);
+}
+nav.mainnav{display:flex;gap:clamp(20px,3vw,40px);}
+nav.mainnav a{
+  display:flex;align-items:center;
+  font-family:"Space Mono",monospace;
+  text-transform:uppercase;letter-spacing:.2em;font-size:11px;
+  color:var(--muted);
+  padding:13px 0;position:relative;
+  transition:color .18s;
+}
+nav.mainnav a::after{content:"";position:absolute;left:0;bottom:8px;height:2px;width:0;background:var(--red);transition:width .22s;}
+nav.mainnav a:hover{color:var(--ink);}
+nav.mainnav a:hover::after{width:100%;}
+.socials{display:flex;align-items:center;gap:2px;padding-right:2px;}
+.socials a{
+  display:flex;align-items:center;justify-content:center;
+  width:38px;height:42px;color:var(--ink);opacity:.7;
+  transition:color .18s,opacity .18s;
+}
+.socials a:hover{color:var(--red);opacity:1;}
+.socials svg{width:17px;height:17px;}
+
+/* ---------------- TICKER (footer flourish) ---------------- */
+.ticker{overflow:hidden;border-top:2px solid var(--rule);background:var(--canvas);}
+.ticker .track{display:inline-flex;white-space:nowrap;will-change:transform;animation:tick 34s linear infinite;}
+.ticker:hover .track{animation-play-state:paused;}
+.ticker .unit{
+  display:inline-flex;align-items:center;
+  font-family:"Space Mono",monospace;font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--muted);padding:8px 0;
+}
+.ticker .unit i{color:var(--red);font-style:normal;padding:0 24px;}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ---------------- SHARED SECTION HEAD ---------------- */
+.sec{padding:70px 0;}
+.sec + .sec{border-top:1px solid var(--hair);}
+.kick{
+  display:inline-block;
+  font-family:"Space Mono",monospace;text-transform:uppercase;letter-spacing:.26em;
+  font-size:11px;color:var(--red);margin-bottom:12px;
+}
+.sec-row{display:flex;align-items:flex-end;gap:22px;}
+.sec-row h2{
+  flex:0 0 auto;
+  font-family:var(--disp);font-weight:800;text-transform:uppercase;
+  font-size:clamp(34px,6vw,74px);line-height:.86;letter-spacing:-.01em;
+}
+.sec-row h2 .outline{
+  color:transparent;-webkit-text-stroke:1.6px var(--ink);
+}
+.sec-row .swrule{flex:1 1 auto;height:0;border-bottom:2px solid var(--rule);margin-bottom:.32em;min-width:30px;}
+.sec-row .viewall{
+  flex:0 0 auto;
+  font-family:"Space Mono",monospace;text-transform:uppercase;letter-spacing:.18em;font-size:11px;
+  color:var(--muted);margin-bottom:.36em;transition:color .2s;white-space:nowrap;
+}
+.sec-row .viewall:hover{color:var(--red);}
+
+/* ---------------- HERO ---------------- */
+.hero{padding:52px 0 60px;}
+.hero-top{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:20px;gap:18px;}
+.hero-top .kick{margin-bottom:0;}
+.hero-counter{font-family:"Space Mono",monospace;font-size:13px;letter-spacing:.12em;color:var(--muted);white-space:nowrap;}
+.hero-counter b{color:var(--ink);font-weight:700;}
+.hero-counter span{padding:0 6px;opacity:.6;}
+
+.stage{
+  display:grid;grid-template-columns:1.62fr .9fr;gap:0;
+  border:1px solid var(--rule);background:var(--surface);
+}
+.panel{position:relative;overflow:hidden;aspect-ratio:16/11;background:#000;}
+.slides{position:absolute;inset:0;}
+.slide{position:absolute;inset:0;opacity:0;transition:opacity .7s ease;pointer-events:none;}
+.slide.active{opacity:1;pointer-events:auto;}
+.slide img{width:100%;height:100%;object-fit:cover;filter:saturate(1.02) contrast(1.03);}
+.slide.active img{animation:rise .9s ease;}
+@keyframes rise{from{transform:scale(1.06)}to{transform:scale(1)}}
+/* dark gradient lives on the photo in BOTH schemes so caption stays legible */
+.panel::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(to top,rgba(8,7,6,.82) 0%,rgba(8,7,6,.25) 42%,rgba(8,7,6,0) 70%);
+}
+.onair{
+  position:absolute;top:16px;left:16px;z-index:3;
+  display:flex;align-items:center;gap:8px;
+  font-family:"Space Mono",monospace;text-transform:uppercase;letter-spacing:.2em;font-size:10px;color:#F4EFE6;
+}
+.onair .led{width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 10px 1px var(--glow);animation:pulse 2.4s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.hero-caption{position:absolute;left:0;right:0;bottom:0;z-index:3;padding:26px 28px;}
+.hero-caption .idx{font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.18em;color:#E8C8C5;}
+.hero-name{
+  font-family:var(--disp);font-weight:800;text-transform:uppercase;color:#FBF8F1;
+  font-size:clamp(40px,7.2vw,104px);line-height:.84;letter-spacing:-.01em;
+  margin-top:6px;text-wrap:balance;
+}
+.meta{position:relative;overflow:hidden;padding:34px 30px;display:flex;flex-direction:column;border-left:1px solid var(--rule);}
+/* subtle, consistent gradient wash behind the meta panel (same for every artist) */
+.meta-art{
+  position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(125% 105% at 100% 112%, rgba(198,53,47,.20) 0%, rgba(198,53,47,.07) 38%, transparent 70%),
+    linear-gradient(135deg, transparent 52%, rgba(22,23,26,.05) 100%);
+}
+[data-theme="dark"] .meta-art{
+  background:
+    radial-gradient(125% 105% at 100% 112%, rgba(198,53,47,.36) 0%, rgba(198,53,47,.12) 40%, transparent 72%),
+    linear-gradient(135deg, transparent 52%, rgba(255,255,255,.045) 100%);
+}
+.meta dl,.meta-bio,.meta-actions{position:relative;z-index:1;}
+.meta dl{display:grid;grid-template-columns:auto 1fr;gap:9px 18px;margin:auto 0 18px;}
+.meta dt{font-family:"Space Mono",monospace;text-transform:uppercase;letter-spacing:.18em;font-size:10px;color:var(--muted);align-self:center;}
+.meta dd{font-family:var(--serif);font-size:16px;font-style:italic;color:var(--text);}
+.meta-bio{font-family:var(--serif);font-size:13.5px;line-height:1.5;color:var(--muted);margin-bottom:26px;max-width:36ch;}
+.meta-actions{display:flex;gap:14px;align-items:center;}
+.btn-listen{
+  display:inline-flex;align-items:center;gap:9px;
+  font-family:"Space Mono",monospace;text-transform:uppercase;letter-spacing:.18em;font-size:11px;
+  color:#fff;border:none;background:var(--red);
+  padding:13px 18px;cursor:pointer;transition:.25s;
+}
+.btn-listen .tri{width:0;height:0;border-left:7px solid #fff;border-top:5px solid transparent;border-bottom:5px solid transparent;}
+.btn-listen:hover{box-shadow:0 0 24px -3px var(--glow);transform:translateY(-1px);}
+.btn-profile{font-family:"Space Mono",monospace;text-transform:uppercase;letter-spacing:.16em;font-size:11px;color:var(--muted);transition:.2s;}
+.btn-profile:hover{color:var(--ink);}
+
+.hero-nav{display:flex;align-items:center;justify-content:space-between;margin-top:18px;}
+.dots{display:flex;gap:9px;align-items:center;}
+.dot{width:32px;height:2px;background:var(--hair);border:none;padding:0;cursor:pointer;transition:.3s;}
+.dot.active{background:var(--ink);}
+.arrows{display:flex;gap:8px;}
+.arrows button{
+  width:44px;height:44px;border:1px solid var(--rule);background:transparent;color:var(--ink);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s;
+}
+.arrows button:hover{background:var(--red);border-color:var(--red);color:#fff;}
+.arrows svg{width:16px;height:16px;}
+
+/* ---------------- RELEASES (gallery placards) ---------------- */
+.rel-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+@media(max-width:1040px){.rel-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:680px){.rel-grid{grid-template-columns:repeat(2,1fr);}}
+.rel-card{
+  display:flex;flex-direction:column;background:var(--surface);
+  border:1px solid var(--hair);transition:border-color .25s,transform .25s,box-shadow .25s;
+}
+.rel-card.is-hidden{display:none;}
+.rel-card:hover{border-color:var(--ink);transform:translateY(-4px);box-shadow:0 22px 40px -28px rgba(0,0,0,.5);}
+.rel-cover{position:relative;aspect-ratio:1/1;overflow:hidden;background:#000;border-bottom:1px solid var(--hair);}
+.rel-cover img{width:100%;height:100%;object-fit:cover;transition:transform .6s;}
+.rel-card:hover .rel-cover img{transform:scale(1.05);}
+.fmt{
+  position:absolute;top:10px;right:10px;z-index:2;
+  font-family:"Space Mono",monospace;text-transform:uppercase;letter-spacing:.18em;font-size:9px;
+  color:#F4EFE6;background:rgba(8,7,6,.62);border:1px solid rgba(244,239,230,.28);padding:4px 8px;
+}
+.feat-flag{
+  position:absolute;top:10px;left:10px;z-index:2;
+  font-family:"Space Mono",monospace;text-transform:uppercase;letter-spacing:.2em;font-size:9px;
+  color:#fff;background:var(--red);padding:4px 9px;
+}
+/* museum placard caption */
+.placard{padding:14px 15px 16px;display:flex;flex-direction:column;flex:1;}
+.rel-artist{font-family:"Space Mono",monospace;text-transform:uppercase;letter-spacing:.16em;font-size:10px;color:var(--muted);margin-bottom:7px;}
+.rel-title{font-family:var(--disp);font-weight:700;text-transform:uppercase;font-size:18px;line-height:.96;letter-spacing:.005em;color:var(--ink);}
+.rel-foot{margin-top:14px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.rel-date{display:inline-flex;align-items:center;gap:7px;font-family:"Space Mono",monospace;text-transform:uppercase;letter-spacing:.16em;font-size:10px;color:var(--muted);}
+.rel-date .cal{width:11px;height:11px;flex:0 0 auto;color:var(--muted);transition:color .25s;}
+.rel-go{font-family:"Space Mono",monospace;text-transform:uppercase;letter-spacing:.16em;font-size:10px;color:var(--muted);opacity:0;transform:translateX(-4px);transition:.25s;white-space:nowrap;}
+.rel-card:hover .rel-go{opacity:1;transform:none;color:var(--ink);}
+.rel-card:hover .rel-date .cal{color:var(--red);}
+/* featured card — inverted red placard */
+.rel-card.feat .placard{background:var(--red);}
+.rel-card.feat .rel-artist{color:rgba(255,255,255,.78);}
+.rel-card.feat .rel-title{color:#fff;}
+.rel-card.feat .rel-date{color:rgba(255,255,255,.82);}
+.rel-card.feat .rel-date .cal{color:rgba(255,255,255,.85);}
+.rel-card.feat .rel-go{color:rgba(255,255,255,.72);}
+.rel-card.feat:hover .rel-go{color:#fff;}
+.rel-card.feat:hover .rel-date .cal{color:#fff;}
+
+.rel-loadwrap{margin-top:26px;display:flex;justify-content:center;}
+.rel-loadmore{
+  font-family:"Space Mono",monospace;text-transform:uppercase;letter-spacing:.2em;font-size:11px;
+  color:var(--ink);background:transparent;border:1px solid var(--rule);
+  padding:15px 34px;cursor:pointer;transition:.25s;
+}
+.rel-loadmore:hover{background:var(--ink);color:var(--canvas);}
+.rel-loadmore[hidden]{display:none;}
+.rel-loadmore .ct{opacity:.55;margin-left:8px;}
+
+/* ---------------- NEWS ---------------- */
+.news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.news-card{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--hair);transition:border-color .25s,transform .25s;}
+.news-card:hover{border-color:var(--ink);transform:translateY(-4px);}
+.news-thumb{aspect-ratio:16/10;overflow:hidden;background:#000;border-bottom:1px solid var(--hair);}
+.news-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .5s;}
+.news-card:hover .news-thumb img{transform:scale(1.05);}
+.news-body{padding:22px 22px 26px;display:flex;flex-direction:column;flex:1;}
+.news-date{font-family:"Space Mono",monospace;text-transform:uppercase;letter-spacing:.16em;font-size:10px;color:var(--red);margin-bottom:13px;}
+.news-head{font-family:var(--disp);font-weight:700;text-transform:uppercase;font-size:22px;line-height:.98;letter-spacing:.005em;margin-bottom:12px;}
+.news-dek{font-family:var(--serif);font-size:15px;color:var(--muted);line-height:1.55;flex:1;}
+.news-more{margin-top:18px;font-family:"Space Mono",monospace;text-transform:uppercase;letter-spacing:.16em;font-size:10px;color:var(--muted);transition:.2s;}
+.news-card:hover .news-more{color:var(--ink);}
+
+/* ---------------- FOOTER ---------------- */
+footer{border-top:2px solid var(--rule);padding:72px 0 38px;position:relative;overflow:hidden;}
+.fmark{
+  font-family:var(--disp);font-weight:900;
+  font-size:clamp(140px,24vw,330px);line-height:.74;color:var(--red);
+  letter-spacing:-.04em;opacity:.92;
+  position:absolute;right:-12px;top:-30px;pointer-events:none;user-select:none;
+}
+.foot-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:40px;margin-bottom:58px;}
+.foot-news h3{font-family:var(--disp);font-weight:800;text-transform:uppercase;font-size:clamp(28px,3.4vw,42px);line-height:.9;letter-spacing:-.01em;margin-bottom:14px;max-width:14ch;}
+.foot-news p{font-family:var(--serif);font-size:15px;color:var(--muted);margin-bottom:18px;max-width:34ch;}
+.nl{display:flex;border:1px solid var(--rule);max-width:400px;background:var(--surface);}
+.nl input{flex:1;background:transparent;border:none;color:var(--text);font-family:var(--serif);font-size:15px;padding:14px 16px;outline:none;}
+.nl input::placeholder{color:var(--muted);}
+.nl button{background:var(--red);color:#fff;border:none;cursor:pointer;font-family:"Space Mono",monospace;text-transform:uppercase;letter-spacing:.16em;font-size:11px;padding:0 22px;transition:.25s;}
+.nl button:hover{box-shadow:0 0 24px -2px var(--glow);}
+.foot-col h4{font-family:"Space Mono",monospace;text-transform:uppercase;letter-spacing:.2em;font-size:10px;color:var(--muted);margin-bottom:16px;}
+.foot-col ul{list-style:none;}
+.foot-col li{margin-bottom:11px;}
+.foot-col a{font-family:var(--disp);font-weight:600;text-transform:uppercase;font-size:16px;letter-spacing:.01em;color:var(--ink);transition:.2s;}
+.foot-col a:hover{color:var(--red);}
+.foot-bottom{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--hair);padding-top:24px;flex-wrap:wrap;gap:16px;}
+.foot-bottom .mono{color:var(--muted);}
+.foot-socials{display:flex;gap:16px;}
+.foot-socials a{color:var(--ink);opacity:.7;transition:.2s;display:flex;}
+.foot-socials a:hover{color:var(--red);opacity:1;}
+.foot-socials svg{width:17px;height:17px;}
+
+/* ---------------- RESPONSIVE ---------------- */
+@media(max-width:900px){
+  .stage{grid-template-columns:1fr;}
+  .meta{border-left:none;border-top:1px solid var(--rule);}
+  .panel{aspect-ratio:4/3;}
+  .news-grid{grid-template-columns:1fr;}
+  .foot-grid{grid-template-columns:1fr;gap:34px;}
+  .fmark{opacity:.45;}
+}
+@media(max-width:600px){
+  /* mobile masthead: logo goes full-bleed wide, tagline drops */
+  .masthead-tag{display:none;}
+  .masthead-main{padding:14px 0 12px;}
+  .wordmark{flex:1 1 100%;width:100%;height:auto;}
+}
+@media(max-width:560px){
+  .wrap{padding:0 20px;}
+  .hero-top{flex-direction:column;align-items:flex-start;gap:12px;}
+  .socials{display:none;}
+  .sec-row .swrule{display:none;}
+}
+
+/* ---- font switcher (prototype tool) ---- */
+.fontsw{position:fixed;right:16px;bottom:16px;z-index:9999;display:flex;flex-direction:column;gap:4px;background:rgba(18,18,20,.92);color:#fff;border:1px solid rgba(255,255,255,.16);padding:10px 10px 11px;border-radius:12px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;box-shadow:0 10px 34px rgba(0,0,0,.42);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);max-height:88vh;overflow:auto;}
+.fontsw .lbl{opacity:.55;text-transform:uppercase;letter-spacing:.16em;font-size:9px;margin:0 2px 4px;}
+.fontsw .swdiv{margin-top:8px;padding-top:9px;border-top:1px solid rgba(255,255,255,.14);}
+.fontsw button{all:unset;cursor:pointer;font-size:11px;line-height:1;padding:7px 10px;border-radius:7px;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:14px;white-space:nowrap;}
+.fontsw button:hover{background:rgba(255,255,255,.1);}
+.fontsw button[aria-pressed="true"]{background:#c6352f;}
+.fontsw button .nm{font-weight:600;}
+.fontsw button .pr{opacity:.55;font-size:9px;}
+.fontsw.hidden{display:none;}
+.fontsw__bar{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:0 2px 6px;}
+.fontsw__ttl{opacity:.55;text-transform:uppercase;letter-spacing:.16em;font-size:9px;}
+.fontsw__x{all:unset;cursor:pointer;font-size:9px;letter-spacing:.12em;text-transform:uppercase;opacity:.7;padding:3px 6px;border-radius:6px;border:1px solid rgba(255,255,255,.18);}
+.fontsw__x:hover{opacity:1;background:rgba(255,255,255,.1);}
+.fontsw-fab{position:fixed;right:16px;bottom:16px;z-index:9999;display:none;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;cursor:pointer;border:1px solid rgba(255,255,255,.18);background:rgba(18,18,20,.92);color:#fff;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px;font-weight:700;box-shadow:0 10px 34px rgba(0,0,0,.42);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);}
+.fontsw-fab.show{display:flex;}
+.fontsw-fab:hover{border-color:#c6352f;}
+@media(max-width:640px){.fontsw{right:10px;bottom:10px;}.fontsw-fab{right:10px;bottom:10px;}}
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER (broadsheet masthead) ============ -->
+<header class="masthead">
+  <div class="wrap">
+    <div class="topline">
+      <span class="dateline">Fever LTD — Noise and Culture</span>
+      <div class="topline-right">
+        <span class="est">Est. 2019</span>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme" aria-pressed="false" title="Switch theme">
+          <svg class="ic-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M4.3 4.3l1.8 1.8M17.9 17.9l1.8 1.8M2 12h2.5M19.5 12H22M4.3 19.7l1.8-1.8M17.9 6.1l1.8-1.8"/></svg>
+          <svg class="ic-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.6 6.6 0 0 0 9.8 9.8z"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="masthead-main">
+      <a href="#" class="wordmark" role="img" aria-label="Fever LTD — Noise and Culture"></a>
+      <div class="masthead-tag">
+        <p class="serif">Loud records, pressed properly — out of Los Angeles.</p>
+      </div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="navbar">
+      <nav class="mainnav">
+        <a href="#">Shop</a>
+        <a href="#">News</a>
+        <a href="#">Artists</a>
+        <a href="#">Releases</a>
+      </nav>
+      <div class="socials">
+      <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+      <a href="#" aria-label="Spotify"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm4.6 14.4a.62.62 0 01-.86.21c-2.35-1.44-5.3-1.76-8.79-.96a.62.62 0 11-.28-1.21c3.8-.87 7.08-.5 9.72 1.11.3.18.39.57.21.85zm1.23-2.74a.78.78 0 01-1.07.26c-2.69-1.65-6.79-2.13-9.97-1.17a.78.78 0 11-.45-1.49c3.63-1.1 8.15-.56 11.24 1.33.36.22.48.7.25 1.07zm.11-2.85C14.83 8.96 9.4 8.78 6.3 9.72a.93.93 0 11-.54-1.79c3.56-1.08 9.56-.87 13.3 1.35a.94.94 0 01-.96 1.61z"/></svg></a>
+      <a href="#" aria-label="Bandcamp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 16.5L6.2 7.5H22l-4.2 9H2z"/></svg></a>
+      <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 7.5a3 3 0 00-2.1-2.1C19 4.9 12 4.9 12 4.9s-7 0-8.9.5A3 3 0 001 7.5C.5 9.4.5 12 .5 12s0 2.6.5 4.5a3 3 0 002.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 002.1-2.1c.5-1.9.5-4.5.5-4.5s0-2.6-.5-4.5zM9.8 15.3V8.7l5.7 3.3-5.7 3.3z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ HERO CAROUSEL ============ -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-top">
+      <span class="kick">(01) — Artists</span>
+      <div class="hero-counter"><b id="cur">01</b><span>/</span><span id="tot">06</span></div>
+    </div>
+
+    <div class="stage">
+      <div class="panel">
+        <div class="slides" id="slides">
+          <div class="slide active"><img src="../reference/artists/Teenage%20Wrist/01-epitaph-press-photo-joe-calixto.png" alt="Teenage Wrist"></div>
+          <div class="slide"><img src="../reference/artists/Mascara/04-press-photo-releasewave.jpg" alt="Mascara"></div>
+          <div class="slide"><img src="../reference/artists/Valley%20of%20Doves/07-promo-john-scarlett.jpg" alt="Valley of Doves"></div>
+          <div class="slide"><img src="../reference/artists/Fly%20Over%20States/05-press-photo-2024.jpg" alt="Fly Over States"></div>
+          <div class="slide"><img src="../reference/artists/En%20Masse/02-press-photo-frontview.jpg" alt="En Masse"></div>
+          <div class="slide"><img src="../reference/artists/Muted%20Color/01-band-photo-bandcamp.jpg" alt="Muted Color"></div>
+        </div>
+        <div class="hero-caption">
+          <span class="idx" id="metaIdx">01 — 06</span>
+          <h1 class="hero-name disp"><span id="metaName">Teenage Wrist</span><span class="pd">.</span></h1>
+        </div>
+      </div>
+
+      <aside class="meta">
+        <div class="meta-art" id="metaArt" aria-hidden="true"></div>
+        <dl>
+          <dt>Based</dt><dd id="metaLoc">Los Angeles, CA</dd>
+          <dt>Sound</dt><dd id="metaGenre">Alternative / shoegaze</dd>
+        </dl>
+        <p class="meta-bio" id="metaBio">Fuzzed-out, melodic alt from Marshall Gallagher and Anthony Salazar — longtime Epitaph travelers.</p>
+        <div class="meta-actions">
+          <button class="btn-listen"><span class="tri"></span>Listen</button>
+          <a href="#" class="btn-profile">Profile →</a>
+        </div>
+      </aside>
+    </div>
+
+    <div class="hero-nav">
+      <div class="dots" id="dots"></div>
+      <div class="arrows">
+        <button id="prev" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <button id="next" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LATEST RELEASES ============ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="kick">(02) — Catalog</span>
+      <div class="sec-row">
+        <h2 class="disp">Latest <span class="outline">Releases</span><span class="pd">.</span></h2>
+        <span class="swrule"></span>
+        <a href="#" class="viewall">All releases →</a>
+      </div>
+    </div>
+  </div>
+  <div class="wrap" style="margin-top:34px;">
+    <div class="rel-grid" id="relGrid">
+      <a href="#" class="rel-card feat">
+        <div class="rel-cover"><img src="../reference/artists/Mascara/03-going-postal-cover.jpg" alt="Going Postal cover"><span class="feat-flag">New</span><span class="fmt">Vinyl</span></div>
+        <div class="placard"><div class="rel-artist">Mascara</div><div class="rel-title">Going Postal</div><div class="rel-foot"><span class="rel-date"><svg class="cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4.5" width="18" height="16.5" rx="2"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg>Mar 2026</span><span class="rel-go">View →</span></div></div>
+      </a>
+      <a href="#" class="rel-card">
+        <div class="rel-cover"><img src="../reference/artists/Valley%20of%20Doves/04-feverltd-cd-product.png" alt="Constant Remembrance cover"><span class="fmt">CD</span></div>
+        <div class="placard"><div class="rel-artist">Valley of Doves</div><div class="rel-title">Constant Remembrance</div><div class="rel-foot"><span class="rel-date"><svg class="cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4.5" width="18" height="16.5" rx="2"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg>Mar 2026</span><span class="rel-go">View →</span></div></div>
+      </a>
+      <a href="#" class="rel-card">
+        <div class="rel-cover"><img src="../reference/artists/Dogs%20Run%20Free/03-normal-album-art.jpg" alt="Normal cover"><span class="fmt">Tape</span></div>
+        <div class="placard"><div class="rel-artist">Dogs Run Free</div><div class="rel-title">Normal</div><div class="rel-foot"><span class="rel-date"><svg class="cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4.5" width="18" height="16.5" rx="2"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg>2024</span><span class="rel-go">View →</span></div></div>
+      </a>
+      <a href="#" class="rel-card">
+        <div class="rel-cover"><img src="../reference/artists/En%20Masse/04-album-art-newviolenttrends.jpg" alt="newviolenttrends cover"><span class="fmt">CD</span></div>
+        <div class="placard"><div class="rel-artist">En Masse</div><div class="rel-title">newviolenttrends</div><div class="rel-foot"><span class="rel-date"><svg class="cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4.5" width="18" height="16.5" rx="2"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg>Jun 2025</span><span class="rel-go">View →</span></div></div>
+      </a>
+      <a href="#" class="rel-card is-hidden">
+        <div class="rel-cover"><img src="../reference/artists/Fly%20Over%20States/04-ghosts-cover-art.png" alt="Ghosts cover"><span class="fmt">CD</span></div>
+        <div class="placard"><div class="rel-artist">Fly Over States</div><div class="rel-title">Ghosts</div><div class="rel-foot"><span class="rel-date"><svg class="cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4.5" width="18" height="16.5" rx="2"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg>May 2024</span><span class="rel-go">View →</span></div></div>
+      </a>
+      <a href="#" class="rel-card is-hidden">
+        <div class="rel-cover"><img src="../reference/artists/Muted%20Color/03-take-i-lovely-you-cover.jpg" alt="Take I Lovely You cover"><span class="fmt">Vinyl</span></div>
+        <div class="placard"><div class="rel-artist">Muted Color</div><div class="rel-title">Take I Lovely You</div><div class="rel-foot"><span class="rel-date"><svg class="cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4.5" width="18" height="16.5" rx="2"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg>2023</span><span class="rel-go">View →</span></div></div>
+      </a>
+      <a href="#" class="rel-card is-hidden">
+        <div class="rel-cover"><img src="../reference/artists/Muted%20Color/04-radial-cover.jpg" alt="Radial cover"><span class="fmt">Tape</span></div>
+        <div class="placard"><div class="rel-artist">Muted Color</div><div class="rel-title">Radial</div><div class="rel-foot"><span class="rel-date"><svg class="cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4.5" width="18" height="16.5" rx="2"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg>2023</span><span class="rel-go">View →</span></div></div>
+      </a>
+    </div>
+    <div class="rel-loadwrap">
+      <button class="rel-loadmore" id="relMore" type="button">Load more<span class="ct" id="relCount"></span></button>
+    </div>
+  </div>
+  <script>
+    (function(){
+      var grid=document.getElementById('relGrid');
+      var btn=document.getElementById('relMore');
+      var ct=document.getElementById('relCount');
+      if(!grid||!btn) return;
+      var step=4;
+      function refresh(){
+        var hidden=grid.querySelectorAll('.rel-card.is-hidden');
+        if(ct) ct.textContent=hidden.length?' ('+hidden.length+')':'';
+        btn.hidden=hidden.length===0;
+      }
+      btn.addEventListener('click',function(){
+        var hidden=grid.querySelectorAll('.rel-card.is-hidden');
+        for(var i=0;i<step && i<hidden.length;i++){ hidden[i].classList.remove('is-hidden'); }
+        refresh();
+      });
+      refresh();
+    })();
+  </script>
+</section>
+
+<!-- ============ NEWS ============ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="kick">(03) — Dispatches</span>
+      <div class="sec-row">
+        <h2 class="disp"><span class="outline">News</span><span class="pd">.</span></h2>
+        <span class="swrule"></span>
+        <a href="#" class="viewall">All news →</a>
+      </div>
+    </div>
+    <div class="news-grid" style="margin-top:34px;">
+      <a href="#" class="news-card">
+        <div class="news-thumb"><img src="../reference/artists/Chain%20Gang%20of%201974/05-spotify-artist.jpg" alt="The Chain Gang of 1974"></div>
+        <div class="news-body">
+          <div class="news-date">June 17, 2026</div>
+          <div class="news-head disp">15,000 Streams in 48 Hours</div>
+          <p class="news-dek">The Chain Gang of 1974's new single landed on All New Rock and YouTube's Your New Alternative.</p>
+          <span class="news-more">Read →</span>
+        </div>
+      </a>
+      <a href="#" class="news-card">
+        <div class="news-thumb"><img src="../reference/artists/Mascara/03-going-postal-cover.jpg" alt="Going Postal"></div>
+        <div class="news-body">
+          <div class="news-date">March 13, 2026</div>
+          <div class="news-head disp">Mascara — 'Going Postal' Out Now</div>
+          <p class="news-dek">The Paris shoegaze outfit's first full-length, pressed to vinyl.</p>
+          <span class="news-more">Read →</span>
+        </div>
+      </a>
+      <a href="#" class="news-card">
+        <div class="news-thumb"><img src="../reference/artists/Valley%20of%20Doves/04-feverltd-cd-product.png" alt="Valley of Doves CD"></div>
+        <div class="news-body">
+          <div class="news-date">March 1, 2026</div>
+          <div class="news-head disp">Valley of Doves on CD</div>
+          <p class="news-dek">The Birmingham post-hardcore record 'Constant Remembrance of Wanting Nothing' arrives.</p>
+          <span class="news-more">Read →</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="fmark" aria-hidden="true">F</div>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-news">
+        <h3 class="disp">On the Frequency<span class="pd">.</span></h3>
+        <p>New pressings and dispatches — sent rarely, never noise.</p>
+        <form class="nl" onsubmit="return false">
+          <input type="email" placeholder="your@email.com" aria-label="Email">
+          <button type="submit">Subscribe</button>
+        </form>
+      </div>
+      <div class="foot-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="#">Shop</a></li>
+          <li><a href="#">News</a></li>
+          <li><a href="#">Artists</a></li>
+          <li><a href="#">Releases</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Label</h4>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Demos</a></li>
+          <li><a href="#">Stockists</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span class="mono">© 2026 Fever LTD — Noise and Culture</span>
+      <div class="foot-socials">
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+        <a href="#" aria-label="Spotify"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm4.6 14.4a.62.62 0 01-.86.21c-2.35-1.44-5.3-1.76-8.79-.96a.62.62 0 11-.28-1.21c3.8-.87 7.08-.5 9.72 1.11.3.18.39.57.21.85zm1.23-2.74a.78.78 0 01-1.07.26c-2.69-1.65-6.79-2.13-9.97-1.17a.78.78 0 11-.45-1.49c3.63-1.1 8.15-.56 11.24 1.33.36.22.48.7.25 1.07zm.11-2.85C14.83 8.96 9.4 8.78 6.3 9.72a.93.93 0 11-.54-1.79c3.56-1.08 9.56-.87 13.3 1.35a.94.94 0 01-.96 1.61z"/></svg></a>
+        <a href="#" aria-label="Bandcamp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 16.5L6.2 7.5H22l-4.2 9H2z"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 7.5a3 3 0 00-2.1-2.1C19 4.9 12 4.9 12 4.9s-7 0-8.9.5A3 3 0 001 7.5C.5 9.4.5 12 .5 12s0 2.6.5 4.5a3 3 0 002.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 002.1-2.1c.5-1.9.5-4.5.5-4.5s0-2.6-.5-4.5zM9.8 15.3V8.7l5.7 3.3-5.7 3.3z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ticker (footer flourish) -->
+<div class="ticker" aria-hidden="true">
+  <div class="track" id="track">
+    <span class="unit">Fever LTD<i>✶</i>Los Angeles<i>✶</i>Noise and Culture<i>✶</i>Loud records, pressed properly<i>✶</i>Est. 2019<i>✶</i></span>
+    <span class="unit">Fever LTD<i>✶</i>Los Angeles<i>✶</i>Noise and Culture<i>✶</i>Loud records, pressed properly<i>✶</i>Est. 2019<i>✶</i></span>
+  </div>
+</div>
+
+<script>
+(function(){
+  var artists=[
+    {name:"Teenage Wrist",loc:"Los Angeles, CA",genre:"Alternative / shoegaze",bio:"Fuzzed-out, melodic alt from Marshall Gallagher and Anthony Salazar — longtime Epitaph travelers.",cover:"../reference/artists/Teenage%20Wrist/04-newnoise-by-joe-calixto.jpg"},
+    {name:"Mascara",loc:"Paris, France",genre:"Alt-gaze / heavy shoegaze",bio:"A Paris four-piece turning shoegaze heavy; debut LP 'Going Postal' arrived in 2026.",cover:"../reference/artists/Mascara/03-going-postal-cover.jpg"},
+    {name:"Valley of Doves",loc:"Birmingham, AL",genre:"Post-hardcore",bio:"Birmingham, Alabama post-hardcore — patient and cathartic, built for the room's last song.",cover:"../reference/artists/Valley%20of%20Doves/04-feverltd-cd-product.png"},
+    {name:"Fly Over States",loc:"Montana",genre:"Post-hardcore / screamo",bio:"A Montana screamo quartet — urgent, raw, and (yes) the band, not the country song.",cover:"../reference/artists/Fly%20Over%20States/04-ghosts-cover-art.png"},
+    {name:"En Masse",loc:"Connecticut",genre:"Post-hardcore",bio:"Connecticut post-hardcore fronted by Zack Santiago; the 'newviolenttrends' EP, 2025.",cover:"../reference/artists/En%20Masse/04-album-art-newviolenttrends.jpg"},
+    {name:"Muted Color",loc:"Chicago, IL",genre:"Shoegaze / dream-pop",bio:"A Chicago five-piece washing dream-pop in shoegaze haze across 'Take I Lovely You' and 'Radial'.",cover:"../reference/artists/Muted%20Color/03-take-i-lovely-you-cover.jpg"}
+  ];
+  var slides=[].slice.call(document.querySelectorAll('#slides .slide'));
+  var total=artists.length, i=0;
+  var pad=function(n){return (n<10?'0':'')+n;};
+  var dotsWrap=document.getElementById('dots');
+  document.getElementById('tot').textContent=pad(total);
+
+  artists.forEach(function(_,k){
+    var b=document.createElement('button');
+    b.className='dot'+(k===0?' active':'');
+    b.setAttribute('aria-label','Go to slide '+(k+1));
+    b.addEventListener('click',function(){go(k);});
+    dotsWrap.appendChild(b);
+  });
+  var dots=[].slice.call(dotsWrap.children);
+
+  function render(){
+    var a=artists[i];
+    slides.forEach(function(s,k){s.classList.toggle('active',k===i);});
+    dots.forEach(function(d,k){d.classList.toggle('active',k===i);});
+    document.getElementById('cur').textContent=pad(i+1);
+    document.getElementById('metaIdx').textContent=pad(i+1)+' — '+pad(total);
+    document.getElementById('metaName').textContent=a.name;
+    document.getElementById('metaLoc').textContent=a.loc;
+    document.getElementById('metaGenre').textContent=a.genre;
+    document.getElementById('metaBio').textContent=a.bio;
+  }
+  function go(n){i=(n+total)%total;render();}
+
+  document.getElementById('next').addEventListener('click',function(){go(i+1);});
+  document.getElementById('prev').addEventListener('click',function(){go(i-1);});
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight')go(i+1);
+    if(e.key==='ArrowLeft')go(i-1);
+  });
+
+  var timer=setInterval(function(){go(i+1);},6000);
+  document.querySelector('.stage').addEventListener('mouseenter',function(){clearInterval(timer);});
+})();
+</script>
+
+<script>
+/* ---- color theme: header toggle, persistence, live OS-following ---- */
+(function(){
+  var root=document.documentElement;
+  var btn=document.getElementById('themeToggle');
+  var KEY='fever-theme';
+  var mq=window.matchMedia?window.matchMedia('(prefers-color-scheme: dark)'):null;
+  function current(){ return root.getAttribute('data-theme')==='dark'?'dark':'light'; }
+  function apply(theme){
+    root.setAttribute('data-theme',theme);
+    if(btn){
+      btn.setAttribute('aria-pressed',String(theme==='dark'));
+      btn.title='Switch to '+(theme==='dark'?'light':'dark')+' theme';
+    }
+  }
+  apply(current()); // sync button to the pre-paint state set in <head>
+  if(btn){
+    btn.addEventListener('click',function(){
+      var next=current()==='dark'?'light':'dark';
+      apply(next);
+      try{ localStorage.setItem(KEY,next); }catch(e){}
+    });
+  }
+  // keep following the OS until the user makes an explicit choice
+  if(mq){
+    var onChange=function(e){
+      var stored=null; try{ stored=localStorage.getItem(KEY); }catch(_){}
+      if(!stored) apply(e.matches?'dark':'light');
+    };
+    if(mq.addEventListener) mq.addEventListener('change',onChange);
+    else if(mq.addListener) mq.addListener(onChange);
+  }
+})();
+</script>
+
+<script>
+(function(){
+  var P=[
+    {id:'poster',name:'Poster',disp:'"Big Shoulders Display",sans-serif',serif:'"Fraunces",Georgia,serif'},
+    {id:'gallery',name:'Gallery',disp:'"Syne",sans-serif',serif:'"Newsreader",Georgia,serif'},
+    {id:'grotesque',name:'Grotesque',disp:'"Bricolage Grotesque",sans-serif',serif:'"Fraunces",Georgia,serif'},
+    {id:'signal',name:'Signal',disp:'"Schibsted Grotesk",sans-serif',serif:'"Spectral",Georgia,serif'},
+    {id:'techno',name:'Techno',disp:'"Space Grotesk",sans-serif',serif:'"Spectral",Georgia,serif'},
+    {id:'editorial',name:'Editorial',disp:'"Archivo",sans-serif',serif:'"DM Serif Display",serif'},
+    {id:'clean',name:'Clean',disp:'"Hanken Grotesk",sans-serif',serif:'"Newsreader",Georgia,serif'}
+  ];
+  var DEFAULT='poster';
+  var root=document.documentElement;
+  var wrap=document.createElement('div');
+  wrap.className='fontsw';
+  wrap.setAttribute('aria-label','Prototype switcher');
+
+  /* ---- Typeface group ---- */
+  wrap.innerHTML='<div class="lbl">Typeface</div>';
+  function applyFont(p){
+    root.style.setProperty('--disp',p.disp);
+    root.style.setProperty('--serif',p.serif);
+    Array.prototype.forEach.call(wrap.querySelectorAll('button[data-id]'),function(b){
+      b.setAttribute('aria-pressed', String(b.getAttribute('data-id')===p.id));
+    });
+  }
+  P.forEach(function(p){
+    var b=document.createElement('button');
+    b.type='button';
+    b.setAttribute('data-id',p.id);
+    var d=p.disp.split(',')[0].replace(/"/g,'');
+    var s=p.serif.split(',')[0].replace(/"/g,'');
+    b.innerHTML='<span class="nm">'+p.name+'</span><span class="pr">'+d+' + '+s+'</span>';
+    b.title=d+' + '+s;
+    b.addEventListener('click',function(){applyFont(p);});
+    wrap.appendChild(b);
+  });
+
+  document.body.appendChild(wrap);
+
+  var def=null;
+  for(var i=0;i<P.length;i++){ if(P[i].id===DEFAULT){def=P[i];break;} }
+  applyFont(def||P[0]);
+})();
+</script>
+<script>
+/* ---- customizer hide/show toggle (prototype tool) ---- */
+(function(){
+  var wrap=document.querySelector('.fontsw');
+  if(!wrap) return;
+  var KEY='fevproto-customizer-hidden';
+  var bar=document.createElement('div');
+  bar.className='fontsw__bar';
+  bar.innerHTML='<span class="fontsw__ttl">Customizer</span><button type="button" class="fontsw__x" aria-label="Hide customizer (press H)">Hide ✕</button>';
+  wrap.insertBefore(bar, wrap.firstChild);
+  var fab=document.createElement('button');
+  fab.type='button';
+  fab.className='fontsw-fab';
+  fab.setAttribute('aria-label','Show customizer (press H)');
+  fab.textContent='Aa';
+  document.body.appendChild(fab);
+  function setHidden(h){
+    wrap.classList.toggle('hidden',h);
+    fab.classList.toggle('show',h);
+    try{ h?localStorage.setItem(KEY,'1'):localStorage.removeItem(KEY); }catch(e){}
+  }
+  bar.querySelector('.fontsw__x').addEventListener('click',function(){setHidden(true);});
+  fab.addEventListener('click',function(){setHidden(false);});
+  document.addEventListener('keydown',function(e){
+    var t=(e.target&&e.target.tagName||'').toLowerCase();
+    if(t==='input'||t==='textarea'||t==='select') return;
+    if(e.key==='h'||e.key==='H') setHidden(!wrap.classList.contains('hidden'));
+  });
+  try{ if(localStorage.getItem(KEY)==='1') setHidden(true); }catch(e){}
+})();
+</script>
+</body>
+</html>

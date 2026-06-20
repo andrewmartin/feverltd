@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ArrowLeftIcon, Trash2Icon } from "lucide-react";
 import { getArtist } from "@/lib/cms";
 import { ArtistForm } from "@/components/admin/artist-form";
-import { DeleteButton } from "@/components/admin/delete-button";
+import { DeleteDialog } from "@/components/admin/delete-dialog";
+import { Button } from "@/components/ui/button";
 import { deleteArtist } from "@/app/admin/actions";
 
-export const metadata = { title: "Edit artist — Fever Ltd CMS" };
+export const metadata = { title: "Edit artist" };
 
 export default async function EditArtistPage({
   params,
@@ -22,17 +24,24 @@ export default async function EditArtistPage({
         <div>
           <Link
             href="/admin/artists"
-            className="text-sm text-muted-foreground hover:text-foreground"
+            className="text-muted-foreground hover:text-foreground inline-flex items-center gap-1 text-sm"
           >
-            ← Artists
+            <ArrowLeftIcon className="size-3.5" />
+            Artists
           </Link>
           <h1 className="mt-2 text-2xl font-bold tracking-tight">{artist.name}</h1>
         </div>
-        <DeleteButton
-          id={artist.id}
-          label={artist.name}
-          action={deleteArtist}
+        <DeleteDialog
+          kind="artist"
+          name={artist.name}
+          onConfirm={deleteArtist.bind(null, artist.id)}
           redirectTo="/admin/artists"
+          trigger={
+            <Button variant="destructive">
+              <Trash2Icon />
+              Delete
+            </Button>
+          }
         />
       </header>
       <ArtistForm artist={artist} />

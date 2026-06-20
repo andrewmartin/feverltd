@@ -4,6 +4,7 @@ import { auth, signOut } from "@/auth";
 import { isAdminEmail } from "@/lib/admin";
 import { SignOutButton } from "./sign-out-button";
 import { MobileNav } from "./mobile-nav";
+import { FeverLogo } from "./fever-logo";
 
 const NAV_LINKS = [
   { href: "/releases", label: "Releases" },
@@ -20,16 +21,13 @@ export async function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
-      <div className="relative mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
+      <div className="relative mx-auto flex h-20 max-w-7xl items-center justify-between gap-6 px-6">
         <Link
           href="/"
-          className="group flex items-center gap-2 focus-visible:outline-none"
+          className="group flex shrink-0 items-center focus-visible:outline-none"
           aria-label="Fever Ltd — home"
         >
-          <span className="inline-block h-2.5 w-2.5 rounded-full bg-accent transition-transform group-hover:scale-125" />
-          <span className="font-mono text-sm font-bold uppercase tracking-[0.2em]">
-            Fever Ltd
-          </span>
+          <FeverLogo className="h-9 w-auto text-foreground transition-colors group-hover:text-accent sm:h-11" />
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex" aria-label="Primary">

@@ -6,46 +6,48 @@ import { ReleaseStatus, type Artist, type Release, type Track } from "@prisma/cl
  * Everything here is scoped to PUBLISHED releases only.
  */
 
-export type ReleaseWithArtist = Release & { artist: Artist };
+export type ReleaseWithArtists = Release & { artists: Artist[] };
 
 export type ReleaseWithDetails = Release & {
-  artist: Artist;
+  artists: Artist[];
   tracks: Track[];
 };
 
 export type ArtistWithReleases = Artist & {
-  releases: ReleaseWithArtist[];
+  releases: ReleaseWithArtists[];
 };
+
+const artistsInclude = { orderBy: { name: "asc" } } as const;
 
 /** A handful of the most recent published releases for the landing page. */
 export async function getFeaturedReleases(
   limit = 6,
-): Promise<ReleaseWithArtist[]> {
+): Promise<ReleaseWithArtists[]> {
   return prisma.release.findMany({
     where: { status: ReleaseStatus.PUBLISHED },
-    include: { artist: true },
+    include: { artists: artistsInclude },
     orderBy: [{ releaseDate: "desc" }, { createdAt: "desc" }],
     take: limit,
   });
 }
 
 /** The full published catalog, newest first. */
-export async function getAllReleases(): Promise<ReleaseWithArtist[]> {
+export async function getAllReleases(): Promise<ReleaseWithArtists[]> {
   return prisma.release.findMany({
     where: { status: ReleaseStatus.PUBLISHED },
-    include: { artist: true },
+    include: { artists: artistsInclude },
     orderBy: [{ releaseDate: "desc" }, { createdAt: "desc" }],
   });
 }
 
-/** A single published release with artist + ordered tracklist, or null. */
+/** A single published release with artists + ordered tracklist, or null. */
 export async function getReleaseBySlug(
   slug: string,
 ): Promise<ReleaseWithDetails | null> {
   return prisma.release.findFirst({
     where: { slug, status: ReleaseStatus.PUBLISHED },
     include: {
-      artist: true,
+      artists: artistsInclude,
       tracks: { orderBy: { position: "asc" } },
     },
   });
@@ -73,7 +75,7 @@ export async function getArtistBySlug(
     include: {
       releases: {
         where: { status: ReleaseStatus.PUBLISHED },
-        include: { artist: true },
+        include: { artists: artistsInclude },
         orderBy: [{ releaseDate: "desc" }, { createdAt: "desc" }],
       },
     },

@@ -75,7 +75,9 @@ model Artist {
   bio       String?   @db.Text
   imageUrl  String?
   website   String?
-  releases  Release[]
+  // Many-to-many: a release can credit multiple artists (splits, comps) and an
+  // artist appears on many releases. Implicit join table (_ArtistToRelease).
+  releases  Release[] @relation("ArtistReleases")
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
@@ -94,14 +96,12 @@ model Release {
   coverUrl    String?
   releaseDate DateTime?
   status      ReleaseStatus @default(DRAFT)
-  artistId    String
-  artist      Artist        @relation(fields: [artistId], references: [id], onDelete: Cascade)
+  artists     Artist[]      @relation("ArtistReleases")
   tracks      Track[]
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 
   @@index([status])
-  @@index([artistId])
 }
 
 model Track {
@@ -113,4 +113,26 @@ model Track {
   release   Release @relation(fields: [releaseId], references: [id], onDelete: Cascade)
 
   @@unique([releaseId, position])
+}
+
+enum PostStatus {
+  DRAFT
+  PUBLISHED
+}
+
+// News / blog posts about the label. No owner assigned (MVP).
+model NewsPost {
+  id          String     @id @default(cuid())
+  title       String
+  slug        String     @unique
+  excerpt     String?    @db.Text
+  body        String?    @db.Text
+  heroImage   String?
+  status      PostStatus @default(DRAFT)
+  publishedAt DateTime?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([status])
+  @@index([publishedAt])
 }

@@ -1,11 +1,11 @@
 import Link from "next/link";
-import type { ReleaseWithArtist } from "@/lib/catalog";
+import type { ReleaseWithArtists } from "@/lib/catalog";
 import { ReleaseCard } from "@/components/site/release-card";
 
 export function FeaturedReleases({
   releases,
 }: {
-  releases: ReleaseWithArtist[];
+  releases: ReleaseWithArtists[];
 }) {
   return (
     <section className="border-b border-border" aria-labelledby="featured-heading">

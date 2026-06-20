@@ -1,36 +1,64 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ReleaseStatus, type Release } from "@prisma/client";
+import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { ReleaseStatus } from "@prisma/client";
 import { releaseSchema, type ReleaseInput } from "@/lib/cms";
+import { adminKeys, type ArtistOption } from "@/lib/admin-queries";
 import { createRelease, updateRelease } from "@/app/admin/actions";
-import { Button, Field, Input, Select, Textarea } from "@/components/admin/ui";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Field, FormError } from "@/components/admin/field";
+import { ImagePicker } from "@/components/admin/image-picker";
 
-type ArtistOption = { id: string; name: string };
+type ReleaseFormRecord = {
+  id: string;
+  title: string;
+  slug: string;
+  catalogNo: string | null;
+  description: string | null;
+  coverUrl: string | null;
+  releaseDate: Date | string | null;
+  status: ReleaseStatus;
+  artists: { id: string }[];
+};
 
 type ReleaseFormProps = {
   artists: ArtistOption[];
   /** Present when editing. */
-  release?: Release;
+  release?: ReleaseFormRecord;
 };
 
 /** Format a Date to the yyyy-MM-dd value an <input type="date"> expects. */
-function toDateInput(value: Date | null | undefined): string {
+function toDateInput(value: Date | string | null | undefined): string {
   if (!value) return "";
   return new Date(value).toISOString().slice(0, 10);
 }
 
 export function ReleaseForm({ artists, release }: ReleaseFormProps) {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [pending, startTransition] = useTransition();
   const [formError, setFormError] = useState<string | null>(null);
 
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<ReleaseInput>({
     resolver: zodResolver(releaseSchema),
@@ -42,7 +70,7 @@ export function ReleaseForm({ artists, release }: ReleaseFormProps) {
       coverUrl: release?.coverUrl ?? "",
       releaseDate: toDateInput(release?.releaseDate),
       status: release?.status ?? ReleaseStatus.DRAFT,
-      artistId: release?.artistId ?? artists[0]?.id ?? "",
+      artistIds: release?.artists.map((a) => a.id) ?? [],
     },
   });
 
@@ -54,8 +82,11 @@ export function ReleaseForm({ artists, release }: ReleaseFormProps) {
         : await createRelease(values);
       if (!result.ok) {
         setFormError(result.error);
+        toast.error(result.error);
         return;
       }
+      toast.success(release ? "Release updated" : "Release created");
+      queryClient.invalidateQueries({ queryKey: adminKeys.releases });
       router.push("/admin/releases");
       router.refresh();
     });
@@ -65,25 +96,67 @@ export function ReleaseForm({ artists, release }: ReleaseFormProps) {
   const noArtists = artists.length === 0;
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex max-w-2xl flex-col gap-5">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex max-w-2xl flex-col gap-5"
+    >
       {noArtists ? (
-        <p className="rounded-md border border-border bg-muted/30 px-3 py-2 text-sm text-muted-foreground">
-          You need at least one artist before creating a release.
+        <p className="border-border bg-muted/30 text-muted-foreground rounded-md border px-3 py-2 text-sm">
+          You need at least one artist before creating a release.{" "}
+          <Link href="/admin/artists/new" className="text-primary underline">
+            Add an artist
+          </Link>
+          .
         </p>
       ) : null}
 
-      <Field label="Title" htmlFor="title" error={errors.title?.message}>
+      <Field
+        label="Title"
+        htmlFor="title"
+        required
+        error={errors.title?.message}
+      >
         <Input id="title" autoComplete="off" {...register("title")} />
       </Field>
 
-      <Field label="Artist" htmlFor="artistId" error={errors.artistId?.message}>
-        <Select id="artistId" disabled={noArtists} {...register("artistId")}>
-          {artists.map((a) => (
-            <option key={a.id} value={a.id}>
-              {a.name}
-            </option>
-          ))}
-        </Select>
+      <Field
+        label="Artists"
+        htmlFor="artistIds"
+        required
+        error={errors.artistIds?.message}
+        hint="Credit at least one artist."
+      >
+        <Controller
+          control={control}
+          name="artistIds"
+          render={({ field }) => {
+            const selected = field.value ?? [];
+            return (
+              <div className="flex flex-col gap-2 rounded-lg border p-3">
+                {artists.map((artist) => {
+                  const checked = selected.includes(artist.id);
+                  return (
+                    <label
+                      key={artist.id}
+                      className="flex cursor-pointer items-center gap-2 text-sm"
+                    >
+                      <Checkbox
+                        checked={checked}
+                        onCheckedChange={(value) => {
+                          const next = value
+                            ? [...selected, artist.id]
+                            : selected.filter((id) => id !== artist.id);
+                          field.onChange(next);
+                        }}
+                      />
+                      {artist.name}
+                    </label>
+                  );
+                })}
+              </div>
+            );
+          }}
+        />
       </Field>
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
@@ -93,40 +166,81 @@ export function ReleaseForm({ artists, release }: ReleaseFormProps) {
           error={errors.slug?.message}
           hint="Optional — from title if blank."
         >
-          <Input id="slug" placeholder="auto-generated" autoComplete="off" {...register("slug")} />
+          <Input
+            id="slug"
+            placeholder="auto-generated"
+            autoComplete="off"
+            {...register("slug")}
+          />
         </Field>
 
-        <Field label="Catalog no." htmlFor="catalogNo" error={errors.catalogNo?.message}>
-          <Input id="catalogNo" placeholder="FEV-001" autoComplete="off" {...register("catalogNo")} />
+        <Field
+          label="Catalog no."
+          htmlFor="catalogNo"
+          error={errors.catalogNo?.message}
+        >
+          <Input
+            id="catalogNo"
+            placeholder="FEV-001"
+            autoComplete="off"
+            {...register("catalogNo")}
+          />
         </Field>
       </div>
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <Field label="Status" htmlFor="status" error={errors.status?.message}>
-          <Select id="status" {...register("status")}>
-            <option value={ReleaseStatus.DRAFT}>Draft</option>
-            <option value={ReleaseStatus.PUBLISHED}>Published</option>
-          </Select>
+          <Controller
+            control={control}
+            name="status"
+            render={({ field }) => (
+              <Select value={field.value} onValueChange={field.onChange}>
+                <SelectTrigger id="status" className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value={ReleaseStatus.DRAFT}>Draft</SelectItem>
+                  <SelectItem value={ReleaseStatus.PUBLISHED}>
+                    Published
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            )}
+          />
         </Field>
 
-        <Field label="Release date" htmlFor="releaseDate" error={errors.releaseDate?.message}>
+        <Field
+          label="Release date"
+          htmlFor="releaseDate"
+          error={errors.releaseDate?.message}
+        >
           <Input id="releaseDate" type="date" {...register("releaseDate")} />
         </Field>
       </div>
 
-      <Field label="Cover URL" htmlFor="coverUrl" error={errors.coverUrl?.message}>
-        <Input id="coverUrl" type="url" placeholder="https://…" {...register("coverUrl")} />
+      <Field label="Cover image" htmlFor="coverUrl" error={errors.coverUrl?.message}>
+        <Controller
+          control={control}
+          name="coverUrl"
+          render={({ field }) => (
+            <ImagePicker
+              value={field.value ?? undefined}
+              onChange={field.onChange}
+              disabled={busy}
+            />
+          )}
+        />
       </Field>
 
-      <Field label="Description" htmlFor="description" error={errors.description?.message}>
-        <Textarea id="description" {...register("description")} />
+      <Field
+        label="Description"
+        htmlFor="description"
+        error={errors.description?.message}
+      >
+        <Textarea id="description" rows={5} {...register("description")} />
       </Field>
 
-      {formError ? (
-        <p className="rounded-md border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-400" role="alert">
-          {formError}
-        </p>
-      ) : null}
+      <FormError message={formError} />
 
       <div className="flex items-center gap-3">
         <Button type="submit" disabled={busy || noArtists}>

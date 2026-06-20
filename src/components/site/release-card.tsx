@@ -1,12 +1,12 @@
 import Link from "next/link";
-import type { ReleaseWithArtist } from "@/lib/catalog";
+import type { ReleaseWithArtists } from "@/lib/catalog";
 
 function formatYear(date?: Date | null) {
   if (!date) return null;
   return new Date(date).getFullYear();
 }
 
-export function ReleaseCard({ release }: { release: ReleaseWithArtist }) {
+export function ReleaseCard({ release }: { release: ReleaseWithArtists }) {
   const year = formatYear(release.releaseDate);
 
   return (
@@ -43,7 +43,7 @@ export function ReleaseCard({ release }: { release: ReleaseWithArtist }) {
           {release.title}
         </h3>
         <p className="mt-0.5 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-          {release.artist.name}
+          {release.artists.map((a) => a.name).join(", ")}
           {year ? ` · ${year}` : ""}
         </p>
       </div>

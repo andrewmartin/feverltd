@@ -1,23 +1,91 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
 
 /* ------------------------------------------------------------------ */
-/* Fever Ltd — design tokens (Tailwind v4 CSS-first theme)            */
+/* Fever Ltd — theming                                                 */
+/*                                                                     */
+/* The public/marketing site keeps its existing dark + lime look       */
+/* (defined on :root). The /admin CMS opts into a clean light shadcn   */
+/* theme with the brand red as `primary`, scoped under `.admin` so it  */
+/* never bleeds into the public site.                                  */
 /* ------------------------------------------------------------------ */
-@theme {
-  --color-background: #0a0a0b;
-  --color-foreground: #ededee;
-  --color-muted: #16161a;
-  --color-muted-foreground: #8a8a94;
-  --color-border: #26262c;
-  --color-accent: #e6ff3a;
-  --color-accent-foreground: #0a0a0b;
-
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
-}
 
 :root {
   color-scheme: dark;
+
+  /* Public site — dark surface, lime highlight (unchanged) */
+  --background: #0a0a0b;
+  --foreground: #ededee;
+  --card: #111114;
+  --card-foreground: #ededee;
+  --popover: #111114;
+  --popover-foreground: #ededee;
+  --primary: #c6352f; /* brand red */
+  --primary-foreground: #ffffff;
+  --secondary: #16161a;
+  --secondary-foreground: #ededee;
+  --muted: #16161a;
+  --muted-foreground: #8a8a94;
+  --accent: #e6ff3a; /* lime highlight (public site) */
+  --accent-foreground: #0a0a0b;
+  --destructive: oklch(0.62 0.22 25);
+  --border: #26262c;
+  --input: #26262c;
+  --ring: #c6352f;
+  --radius: 0.625rem;
+}
+
+/* Admin CMS — light shadcn theme, brand red primary */
+.admin {
+  color-scheme: light;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.205 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.205 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.205 0 0);
+  --primary: #c6352f; /* brand red */
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.516 0 0);
+  --accent: oklch(0.96 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.91 0 0);
+  --input: oklch(0.91 0 0);
+  --ring: #c6352f;
+}
+
+@theme inline {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
 }
 
 body {
@@ -30,4 +98,10 @@ body {
 ::selection {
   background-color: var(--color-accent);
   color: var(--color-accent-foreground);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
 }

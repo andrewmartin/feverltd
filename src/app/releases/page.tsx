@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { SiteHeader } from "@/components/site/header";
 import { SiteFooter } from "@/components/site/footer";
 import { ReleaseCard } from "@/components/site/release-card";
-import { getAllReleases, type ReleaseWithArtist } from "@/lib/catalog";
+import { getAllReleases, type ReleaseWithArtists } from "@/lib/catalog";
 
 export const metadata: Metadata = {
   title: "Releases",
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ReleasesPage() {
-  let releases: ReleaseWithArtist[] = [];
+  let releases: ReleaseWithArtists[] = [];
   let unreachable = false;
 
   try {

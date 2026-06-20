@@ -3,7 +3,7 @@ import { PrismaClient, ReleaseStatus } from "@prisma/client";
 const prisma = new PrismaClient();
 
 // Real Fever LTD roster + physical catalog, distilled from docs/project-brief.md
-// and docs/reference/artists/*/info.md. Formats (Vinyl/CD/Tape) are folded into
+// and public/reference/artists/*/info.md. Formats (Vinyl/CD/Tape) are folded into
 // the release description since the schema has no dedicated format field.
 
 type ArtistSeed = {
@@ -172,7 +172,8 @@ async function main() {
         description: r.description,
         releaseDate: new Date(r.releaseDate),
         status: ReleaseStatus.PUBLISHED,
-        artistId,
+        // Many-to-many: replace credited artists with this one.
+        artists: { set: [{ id: artistId }] },
       },
       create: {
         title: r.title,
@@ -181,7 +182,7 @@ async function main() {
         description: r.description,
         releaseDate: new Date(r.releaseDate),
         status: ReleaseStatus.PUBLISHED,
-        artistId,
+        artists: { connect: [{ id: artistId }] },
       },
     });
   }

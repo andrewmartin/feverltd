@@ -27,10 +27,11 @@ export async function generateMetadata({
     return { title: "Release not found" };
   }
 
-  const title = `${release.title} — ${release.artist.name}`;
+  const artistNames = release.artists.map((a) => a.name).join(", ");
+  const title = `${release.title} — ${artistNames}`;
   const description =
     release.description ??
-    `${release.title} by ${release.artist.name}, out now on Fever Ltd.`;
+    `${release.title} by ${artistNames}, out now on Fever Ltd.`;
 
   return {
     title,
@@ -112,12 +113,17 @@ export default async function ReleaseDetailPage({ params }: PageProps) {
               </h1>
               <p className="mt-4 text-xl text-muted-foreground">
                 by{" "}
-                <Link
-                  href={`/artists/${release.artist.slug}`}
-                  className="text-foreground transition-colors hover:text-accent focus-visible:text-accent focus-visible:outline-none"
-                >
-                  {release.artist.name}
-                </Link>
+                {release.artists.map((artist, index) => (
+                  <span key={artist.id}>
+                    {index > 0 ? ", " : ""}
+                    <Link
+                      href={`/artists/${artist.slug}`}
+                      className="text-foreground transition-colors hover:text-accent focus-visible:text-accent focus-visible:outline-none"
+                    >
+                      {artist.name}
+                    </Link>
+                  </span>
+                ))}
               </p>
 
               {release.description && (

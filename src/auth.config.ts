@@ -1,6 +1,6 @@
 import type { NextAuthConfig } from "next-auth";
 import Google from "next-auth/providers/google";
-import { isAdminEmail } from "@/lib/admin";
+import { isAdminEmail, isAuthDisabled } from "@/lib/admin";
 
 /**
  * Edge-safe Auth.js config. Contains only what middleware needs — no database
@@ -37,6 +37,8 @@ export const authConfig = {
     authorized({ auth, request: { nextUrl } }) {
       const isOnAdmin = nextUrl.pathname.startsWith("/admin");
       if (!isOnAdmin) return true;
+      // DEV bypass — leave /admin open while building the CMS.
+      if (isAuthDisabled()) return true;
       return auth?.user?.role === "ADMIN";
     },
   },

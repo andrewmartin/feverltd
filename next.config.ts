@@ -5,6 +5,8 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       // Google account avatars (NextAuth profile images)
       { protocol: "https", hostname: "lh3.googleusercontent.com" },
+      // Vercel Blob — uploaded artist/release/news imagery
+      { protocol: "https", hostname: "*.public.blob.vercel-storage.com" },
     ],
   },
   experimental: {
