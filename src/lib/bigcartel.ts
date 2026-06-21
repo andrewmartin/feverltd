@@ -252,23 +252,36 @@ export async function getStore(): Promise<ShopStore | null> {
 }
 
 /**
- * All active products in the shop. Big Cartel paginates at ~10/page; we walk
- * pages until one comes back short. Returns [] when not configured.
+ * All active products in the shop. Big Cartel paginates at ~10/page, but some
+ * storefronts (e.g. feverltd) ignore the `page` param entirely and return the
+ * full catalog on every request. So rather than trusting page length, we walk
+ * pages while deduping by id and stop as soon as a page adds nothing new — that
+ * handles both real pagination and the "ignores page" case without duplicates.
+ * Returns [] when not configured.
  */
 export async function getProducts(): Promise<ShopProduct[]> {
   if (!isBigCartelConfigured()) return [];
   const base = storeBase();
   const all: ShopProduct[] = [];
+  const seen = new Set<string>();
 
   // Hard page cap so a malformed response can never loop forever.
   for (let page = 1; page <= 50; page++) {
     const raw = await bcFetch<RawProduct[]>(`/products.json?page=${page}`);
     if (!Array.isArray(raw) || raw.length === 0) break;
+
+    let added = 0;
     for (const p of raw) {
       const norm = normalizeProduct(p, base);
-      if (norm) all.push(norm);
+      if (!norm || seen.has(norm.id)) continue;
+      seen.add(norm.id);
+      all.push(norm);
+      added++;
     }
-    if (raw.length < 10) break; // last (partial) page
+
+    // Nothing new on this page → either the last (partial) page or a store
+    // that ignores `page` and keeps echoing the same catalog. Either way, stop.
+    if (added === 0 || raw.length < 10) break;
   }
   return all;
 }
