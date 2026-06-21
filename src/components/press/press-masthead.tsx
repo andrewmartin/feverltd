@@ -32,7 +32,7 @@ export function PressMasthead() {
           >
             <FeverLogo className="block h-[clamp(40px,7.4vw,86px)] w-auto max-[600px]:h-auto max-[600px]:w-full" />
           </Link>
-          <div className="max-w-[264px] pb-1.5 text-right max-[600px]:hidden">
+          <div className="max-w-[264px] pb-1.5 text-right max-[860px]:hidden">
             <p className="font-editorial text-[clamp(13px,1.5vw,16px)] italic leading-[1.24] text-quiet">
               Loud records, pressed properly — out of Los Angeles.
             </p>
