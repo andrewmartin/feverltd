@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { Prisma } from "@prisma/client";
+import { Prisma, SubscriberStatus } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { deleteBlobIfOwned } from "@/lib/blob";
 import { getAdminSession } from "@/auth";
@@ -178,7 +178,7 @@ export async function createRelease(
   if (!parsed.success) {
     return { ok: false, error: parsed.error.issues[0]?.message ?? "Invalid input" };
   }
-  const { title, slug, catalogNo, description, coverUrl, releaseDate, status, artistIds } =
+  const { title, slug, catalogNo, description, coverUrl, buyUrl, releaseDate, status, artistIds } =
     parsed.data;
 
   try {
@@ -189,6 +189,7 @@ export async function createRelease(
         catalogNo,
         description,
         coverUrl,
+        buyUrl,
         releaseDate: releaseDate ? new Date(releaseDate) : null,
         status,
         artists: { connect: artistIds.map((id) => ({ id })) },
@@ -213,7 +214,7 @@ export async function updateRelease(
   if (!parsed.success) {
     return { ok: false, error: parsed.error.issues[0]?.message ?? "Invalid input" };
   }
-  const { title, slug, catalogNo, description, coverUrl, releaseDate, status, artistIds } =
+  const { title, slug, catalogNo, description, coverUrl, buyUrl, releaseDate, status, artistIds } =
     parsed.data;
 
   const previous = await prisma.release.findUnique({
@@ -230,6 +231,7 @@ export async function updateRelease(
         catalogNo: catalogNo ?? null,
         description: description ?? null,
         coverUrl: coverUrl ?? null,
+        buyUrl: buyUrl ?? null,
         releaseDate: releaseDate ? new Date(releaseDate) : null,
         status,
         // `set` replaces the full M:N relation with the submitted artists.
@@ -356,5 +358,39 @@ export async function deleteNews(id: string): Promise<ActionResult> {
   }
   await deleteBlobIfOwned(existing?.heroImage);
   revalidateNews();
+  return { ok: true };
+}
+
+/* ------------------------------------------------------------------ */
+/* Subscribers                                                        */
+/* ------------------------------------------------------------------ */
+
+function revalidateSubscribers() {
+  revalidatePath("/admin");
+  revalidatePath("/admin/subscribers");
+}
+
+export async function setSubscriberStatus(
+  id: string,
+  status: SubscriberStatus,
+): Promise<ActionResult> {
+  await requireAdmin();
+  try {
+    await prisma.subscriber.update({ where: { id }, data: { status } });
+  } catch {
+    return { ok: false, error: "Could not update subscriber." };
+  }
+  revalidateSubscribers();
+  return { ok: true };
+}
+
+export async function deleteSubscriber(id: string): Promise<ActionResult> {
+  await requireAdmin();
+  try {
+    await prisma.subscriber.delete({ where: { id } });
+  } catch {
+    return { ok: false, error: "Could not delete subscriber." };
+  }
+  revalidateSubscribers();
   return { ok: true };
 }

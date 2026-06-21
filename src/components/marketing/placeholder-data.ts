@@ -44,6 +44,7 @@ function makeRelease(
     catalogNo,
     description: null,
     coverUrl: null,
+    buyUrl: null,
     releaseDate: new Date(`${year}-01-01`),
     status: ReleaseStatus.PUBLISHED,
     artists: [artist],

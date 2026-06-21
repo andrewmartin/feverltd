@@ -15,6 +15,21 @@ const optionalUrl = z
   .transform((v) => (v === "" ? undefined : v))
   .optional();
 
+/**
+ * Image fields can hold either an absolute http(s) URL (e.g. a Vercel Blob
+ * upload) or a root-relative path served from /public (e.g. the seeded
+ * `/reference/...` assets). Accepts either, or empty.
+ */
+const optionalImageUrl = z
+  .string()
+  .trim()
+  .refine(
+    (v) => v === "" || /^https?:\/\//.test(v) || v.startsWith("/"),
+    "Must be a valid URL or uploaded image",
+  )
+  .transform((v) => (v === "" ? undefined : v))
+  .optional();
+
 /** Accepts a non-empty trimmed string or empty (coerced to undefined). */
 const optionalText = z
   .string()
@@ -42,7 +57,7 @@ export const artistSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(120),
   slug: optionalSlug,
   bio: optionalText,
-  imageUrl: optionalUrl,
+  imageUrl: optionalImageUrl,
   website: optionalUrl,
 });
 
@@ -54,7 +69,8 @@ export const releaseSchema = z.object({
   slug: optionalSlug,
   catalogNo: optionalText,
   description: optionalText,
-  coverUrl: optionalUrl,
+  coverUrl: optionalImageUrl,
+  buyUrl: optionalUrl,
   releaseDate: optionalDate,
   status: z.enum(ReleaseStatus),
   // Many-to-many — at least one artist must be credited.
@@ -69,7 +85,7 @@ export const newsSchema = z.object({
   slug: optionalSlug,
   excerpt: optionalText,
   body: optionalText,
-  heroImage: optionalUrl,
+  heroImage: optionalImageUrl,
   status: z.enum(PostStatus),
   publishedAt: optionalDate,
 });
@@ -134,22 +150,36 @@ export function getNewsPost(id: string) {
 }
 
 export async function getCmsStats() {
-  const [artistCount, releaseCount, publishedCount, newsCount, recentReleases] =
-    await Promise.all([
-      prisma.artist.count(),
-      prisma.release.count(),
-      prisma.release.count({ where: { status: ReleaseStatus.PUBLISHED } }),
-      prisma.newsPost.count(),
-      prisma.release.findMany({
-        orderBy: { updatedAt: "desc" },
-        take: 5,
-        include: {
-          artists: { select: { name: true }, orderBy: { name: "asc" } },
-        },
-      }),
-    ]);
+  const [
+    artistCount,
+    releaseCount,
+    publishedCount,
+    newsCount,
+    subscriberCount,
+    recentReleases,
+  ] = await Promise.all([
+    prisma.artist.count(),
+    prisma.release.count(),
+    prisma.release.count({ where: { status: ReleaseStatus.PUBLISHED } }),
+    prisma.newsPost.count(),
+    prisma.subscriber.count({ where: { status: "SUBSCRIBED" } }),
+    prisma.release.findMany({
+      orderBy: { updatedAt: "desc" },
+      take: 5,
+      include: {
+        artists: { select: { name: true }, orderBy: { name: "asc" } },
+      },
+    }),
+  ]);
 
-  return { artistCount, releaseCount, publishedCount, newsCount, recentReleases };
+  return {
+    artistCount,
+    releaseCount,
+    publishedCount,
+    newsCount,
+    subscriberCount,
+    recentReleases,
+  };
 }
 
 /* ------------------------------------------------------------------ */

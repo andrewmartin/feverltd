@@ -6,13 +6,14 @@
  * Note: values come back as JSON, so Date columns arrive as ISO strings.
  * The Serialized* types below reflect that.
  */
-import type { ReleaseStatus, PostStatus } from "@prisma/client";
+import type { ReleaseStatus, PostStatus, SubscriberStatus } from "@prisma/client";
 
 export const adminKeys = {
   artists: ["admin", "artists"] as const,
   artistOptions: ["admin", "artist-options"] as const,
   releases: ["admin", "releases"] as const,
   news: ["admin", "news"] as const,
+  subscribers: ["admin", "subscribers"] as const,
 };
 
 export type SerializedArtist = {
@@ -54,6 +55,14 @@ export type SerializedNews = {
   updatedAt: string;
 };
 
+export type SerializedSubscriber = {
+  id: string;
+  email: string;
+  status: SubscriberStatus;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type ArtistOption = { id: string; name: string };
 
 async function getJson<T>(url: string): Promise<T> {
@@ -74,3 +83,6 @@ export const fetchReleases = () =>
   getJson<SerializedRelease[]>("/api/admin/releases");
 
 export const fetchNews = () => getJson<SerializedNews[]>("/api/admin/news");
+
+export const fetchSubscribers = () =>
+  getJson<SerializedSubscriber[]>("/api/admin/subscribers");

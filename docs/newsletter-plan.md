@@ -21,6 +21,8 @@ Expected list size: small.
 | Why not Gmail SMTP | Rejected as primary. | ~500/day cap, weaker deliverability, must send from `@gmail.com`. Kept as a fallback only if domain DNS ever becomes a problem. |
 | Why not Buttondown/MailerLite | Rejected. | They'd own (or co-own) the list and the UX. We want it in our codebase + DB. |
 | **Domain** | We **own `feverltd.com`** and control its DNS. | Resend only needs DNS records (SPF/DKIM) — **no email mailboxes/accounts required.** Outbound auth is separate from having inboxes. |
+| **DNS host** | DNS is managed at **DigitalOcean** (nameservers `ns1/2/3.digitalocean.com`). | This is where the Resend SPF/DKIM TXT records get added. No existing MX records → nothing to conflict with. |
+| **Existing live site** | Current `feverltd.com` = self-managed **DigitalOcean droplet** (`143.110.144.242`), nginx → Next.js. This repo is its replacement. | Hosting is independent of the email DNS records, so this doesn't affect the newsletter build. |
 | From / Reply-to | Send as `news@feverltd.com`; set `reply-to:` to a real Gmail. | No inbox exists at `news@feverltd.com` and none is needed — replies route to Gmail. |
 | Unsubscribe | We build it (token link, auto-appended to every send). | Legally required (CAN-SPAM) + keeps us off spam lists. |
 | Spam protection | Honeypot field + idempotent-on-email insert. | Public form; tiny, cheap defenses. |
@@ -52,7 +54,7 @@ Can be done in parallel with the build; sending is stubbed until done.
 
 1. Sign up at **resend.com** (free, no card required).
 2. Add domain **`feverltd.com`** → Resend shows 2–3 DNS records (SPF + DKIM).
-3. Paste those records into the **DNS host** for `feverltd.com`.
+3. Paste those records into **DigitalOcean's DNS panel** for `feverltd.com` (Networking → Domains → feverltd.com).
 4. Wait for verification (usually minutes), then copy the **API key** into `.env.local` as `RESEND_API_KEY`.
 5. Decide the **reply-to Gmail** address → set `EMAIL_REPLY_TO`.
 
