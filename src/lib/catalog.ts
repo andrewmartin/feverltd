@@ -1,5 +1,12 @@
 import { prisma } from "@/lib/db";
-import { ReleaseStatus, type Artist, type Release, type Track } from "@prisma/client";
+import {
+  ReleaseStatus,
+  PostStatus,
+  type Artist,
+  type NewsPost,
+  type Release,
+  type Track,
+} from "@prisma/client";
 
 /**
  * Public read helpers for the Fever Ltd catalog.
@@ -63,6 +70,30 @@ export async function getAllArtists(): Promise<Artist[]> {
       releases: { some: { status: ReleaseStatus.PUBLISHED } },
     },
     orderBy: { name: "asc" },
+  });
+}
+
+/** The most recent published news posts, newest first. */
+export async function getLatestNews(limit = 3): Promise<NewsPost[]> {
+  return prisma.newsPost.findMany({
+    where: { status: PostStatus.PUBLISHED },
+    orderBy: [{ publishedAt: "desc" }, { createdAt: "desc" }],
+    take: limit,
+  });
+}
+
+/** The full published news archive, newest first. */
+export async function getAllNews(): Promise<NewsPost[]> {
+  return prisma.newsPost.findMany({
+    where: { status: PostStatus.PUBLISHED },
+    orderBy: [{ publishedAt: "desc" }, { createdAt: "desc" }],
+  });
+}
+
+/** A single published news post by slug, or null. */
+export async function getNewsBySlug(slug: string): Promise<NewsPost | null> {
+  return prisma.newsPost.findFirst({
+    where: { slug, status: PostStatus.PUBLISHED },
   });
 }
 

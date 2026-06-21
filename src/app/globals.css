@@ -3,6 +3,9 @@
 @import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
+/* Pressroom dark scheme (data-theme on <html>) — for the few utilities that
+   must differ between schemes beyond what the flipping color tokens cover. */
+@custom-variant pdark (&:is(:root[data-theme="dark"] *));
 
 /* ------------------------------------------------------------------ */
 /* Fever Ltd — theming                                                 */
@@ -38,27 +41,34 @@
   --radius: 0.625rem;
 }
 
-/* Admin CMS — light shadcn theme, brand red primary */
+/* Admin CMS — newsprint palette (matches the public "Pressroom" theme) so the
+   shadcn primitives read as one design with the marketing site. The brand red
+   stays `primary`; surfaces/ink/quiet/hair mirror the `.pressroom` light vars. */
 .admin {
   color-scheme: light;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.205 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.205 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.205 0 0);
-  --primary: #c6352f; /* brand red */
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.516 0 0);
-  --accent: oklch(0.96 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --background: #e7e8e4; /* canvas */
+  --foreground: #15171a; /* ink */
+  --card: #f4f5f2; /* surface */
+  --card-foreground: #15171a;
+  --popover: #f4f5f2;
+  --popover-foreground: #15171a;
+  --primary: #c6352f; /* brand red — fever */
+  --primary-foreground: #ffffff;
+  --secondary: #dcddd6;
+  --secondary-foreground: #15171a;
+  --muted: #dcddd6;
+  --muted-foreground: #646862; /* quiet */
+  --accent: #dcddd6;
+  --accent-foreground: #15171a;
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.91 0 0);
-  --input: oklch(0.91 0 0);
+  --border: rgba(18, 20, 18, 0.14); /* hair */
+  --input: rgba(18, 20, 18, 0.2);
   --ring: #c6352f;
+  --radius: 0.375rem; /* sharper, more ruled than the default */
+}
+.admin ::selection {
+  background: #c6352f;
+  color: #fff;
 }
 
 @theme inline {
@@ -103,5 +113,94 @@ body {
 @layer base {
   * {
     @apply border-border outline-ring/50;
+  }
+}
+
+/* ================================================================== */
+/* PRESSROOM — chosen homepage direction (prototype: d-press-gallery)  */
+/*                                                                     */
+/* A light-first "newsprint" palette with a dark toggle, exposed to    */
+/* Tailwind as theme tokens so components style with utilities         */
+/* (bg-canvas, text-ink, font-disp, border-rule, …). The palette flips */
+/* via `data-theme` (set pre-paint in layout.tsx); because the Tailwind */
+/* color tokens are `inline` references to these vars, every utility    */
+/* follows the scheme automatically. All tokens are only defined inside */
+/* `.pressroom`, so they never touch the dark admin/marketing chrome.  */
+/* ================================================================== */
+.pressroom {
+  /* light-first — cool pressroom / newsprint grey */
+  --canvas: #e7e8e4;
+  --surface: #f4f5f2;
+  --hair: rgba(18, 20, 18, 0.15);
+  --rule: rgba(18, 20, 18, 0.86);
+  --ink: #15171a;
+  --quiet: #646862;
+  --fever: #c6352f;
+  --glow: rgba(198, 53, 47, 0.22);
+
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: var(--font-fraunces), Georgia, serif;
+  min-height: 100dvh;
+  transition: background 0.3s, color 0.3s;
+}
+:root[data-theme="dark"] .pressroom {
+  --canvas: #100e0c;
+  --surface: #1a1613;
+  --hair: rgba(239, 233, 222, 0.15);
+  --rule: rgba(239, 233, 222, 0.82);
+  --ink: #efe9de;
+  --quiet: #9a938a;
+  --glow: rgba(198, 53, 47, 0.45);
+}
+.pressroom ::selection {
+  background: var(--fever);
+  color: #fff;
+}
+
+@theme inline {
+  /* Pressroom palette → utilities (bg-canvas, text-ink, border-rule, …) */
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-hair: var(--hair);
+  --color-rule: var(--rule);
+  --color-ink: var(--ink);
+  --color-quiet: var(--quiet);
+  --color-fever: var(--fever);
+
+  /* Pressroom type → utilities (font-disp / font-editorial / font-press) */
+  --font-disp: var(--font-poster), "Big Shoulders", sans-serif;
+  --font-editorial: var(--font-fraunces), Georgia, serif;
+  --font-press: var(--font-space-mono), ui-monospace, monospace;
+
+  /* Pressroom motion → utilities (animate-ticker / rise / pulse) */
+  --animate-ticker: pr-ticker 34s linear infinite;
+  --animate-rise: pr-rise 0.9s ease;
+  --animate-pulse-led: pr-pulse 2.4s infinite;
+}
+
+@keyframes pr-ticker {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes pr-rise {
+  from {
+    transform: scale(1.06);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@keyframes pr-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
   }
 }

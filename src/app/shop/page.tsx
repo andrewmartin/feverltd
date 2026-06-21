@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { SiteHeader } from "@/components/site/header";
-import { SiteFooter } from "@/components/site/footer";
-import { ProductCard } from "@/components/site/product-card";
+import { PressShell } from "@/components/press/press-shell";
+import { PressPageHead } from "@/components/press/press-page-head";
+import { PressProductCard } from "@/components/press/press-product-card";
+import { Outline } from "@/components/press/section-head";
 import {
   getProducts,
   getStore,
@@ -9,6 +10,8 @@ import {
   type ShopProduct,
   type ShopStore,
 } from "@/lib/bigcartel";
+
+const WRAP = "mx-auto w-full max-w-[1280px] px-[34px] max-[560px]:px-5";
 
 export const metadata: Metadata = {
   title: "Shop",
@@ -33,29 +36,26 @@ export default async function ShopPage() {
   const currencySign = store?.currencySign ?? "$";
 
   return (
-    <>
-      <SiteHeader />
-      <main id="main">
-        <section className="border-b border-border">
-          <div className="mx-auto max-w-7xl px-6 pb-12 pt-20 sm:pt-28">
-            <p className="font-mono text-xs uppercase tracking-[0.3em] text-accent">
-              Store
-            </p>
-            <h1 className="mt-4 text-5xl font-bold tracking-tighter sm:text-7xl">
-              Shop
-            </h1>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
-              {store?.description ??
-                "Records, merch and limited runs. Checkout is handled securely through our Big Cartel store."}
-            </p>
-          </div>
-        </section>
+    <PressShell>
+      <PressPageHead
+        kicker="(04) — Store"
+        title={
+          <>
+            The <Outline>Shop</Outline>
+          </>
+        }
+        lede={
+          store?.description ??
+          "Records, merch and limited runs."
+        }
+      />
 
-        <section className="mx-auto max-w-7xl px-6 py-16">
+      <section className="py-[60px] max-[560px]:py-10">
+        <div className={WRAP}>
           {products.length > 0 ? (
-            <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4">
+            <div className="grid grid-cols-4 gap-4 max-[1040px]:grid-cols-3 max-[680px]:grid-cols-2">
               {products.map((product) => (
-                <ProductCard
+                <PressProductCard
                   key={product.id}
                   product={product}
                   currencySign={currencySign}
@@ -63,15 +63,15 @@ export default async function ShopPage() {
               ))}
             </div>
           ) : (
-            <div className="border border-dashed border-border px-6 py-24 text-center">
-              <p className="font-mono text-sm uppercase tracking-widest text-muted-foreground">
+            <div className="border border-dashed border-rule px-6 py-24 text-center">
+              <p className="font-press text-[11px] uppercase tracking-[0.2em] text-quiet">
                 {!configured
                   ? "Shop not connected yet."
                   : unreachable
                     ? "The shop is briefly offline."
                     : "Nothing in stock."}
               </p>
-              <p className="mt-2 text-sm text-muted-foreground">
+              <p className="mt-3 font-editorial text-sm text-quiet">
                 {!configured
                   ? "Set BIGCARTEL_STORE in your environment to pull products from Big Cartel."
                   : unreachable
@@ -80,9 +80,8 @@ export default async function ShopPage() {
               </p>
             </div>
           )}
-        </section>
-      </main>
-      <SiteFooter />
-    </>
+        </div>
+      </section>
+    </PressShell>
   );
 }

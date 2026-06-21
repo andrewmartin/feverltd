@@ -1,68 +1,51 @@
 import type { Metadata } from "next";
-import { SiteHeader } from "@/components/site/header";
-import { SiteFooter } from "@/components/site/footer";
-import { ReleaseCard } from "@/components/site/release-card";
+import { PressShell } from "@/components/press/press-shell";
+import { PressPageHead } from "@/components/press/press-page-head";
+import { PressReleaseCard } from "@/components/press/press-release-card";
+import { Outline } from "@/components/press/section-head";
+import { releasesFrom } from "@/components/press/press-adapters";
 import { getAllReleases, type ReleaseWithArtists } from "@/lib/catalog";
+
+const WRAP = "mx-auto w-full max-w-[1280px] px-[34px] max-[560px]:px-5";
 
 export const metadata: Metadata = {
   title: "Releases",
-  description: "The full Fever Ltd catalog — every record, newest first.",
+  description: "The full Fever LTD catalog — every record, newest first.",
 };
 
 export default async function ReleasesPage() {
   let releases: ReleaseWithArtists[] = [];
-  let unreachable = false;
 
   try {
     releases = await getAllReleases();
   } catch {
-    unreachable = true;
+    // DB empty or unreachable — the adapter falls through to curated content.
   }
 
-  return (
-    <>
-      <SiteHeader />
-      <main id="main">
-        <section className="border-b border-border">
-          <div className="mx-auto max-w-7xl px-6 pb-12 pt-20 sm:pt-28">
-            <p className="font-mono text-xs uppercase tracking-[0.3em] text-accent">
-              Catalog
-            </p>
-            <h1 className="mt-4 text-5xl font-bold tracking-tighter sm:text-7xl">
-              Releases
-            </h1>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
-              Everything we&apos;ve put into the world, in reverse chronological
-              order. Limited pressings — when they&apos;re gone, they&apos;re
-              gone.
-            </p>
-          </div>
-        </section>
+  // Real rows with covers, else the curated catalog (newest = red feature).
+  const cards = releasesFrom(releases);
 
-        <section className="mx-auto max-w-7xl px-6 py-16">
-          {releases.length > 0 ? (
-            <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4">
-              {releases.map((release) => (
-                <ReleaseCard key={release.id} release={release} />
-              ))}
-            </div>
-          ) : (
-            <div className="border border-dashed border-border px-6 py-24 text-center">
-              <p className="font-mono text-sm uppercase tracking-widest text-muted-foreground">
-                {unreachable
-                  ? "The catalog is briefly offline."
-                  : "Nothing pressed yet."}
-              </p>
-              <p className="mt-2 text-sm text-muted-foreground">
-                {unreachable
-                  ? "Try again in a moment."
-                  : "Our first records are on their way — check back soon."}
-              </p>
-            </div>
-          )}
-        </section>
-      </main>
-      <SiteFooter />
-    </>
+  return (
+    <PressShell>
+      <PressPageHead
+        kicker="(02) — Catalog"
+        title={
+          <>
+            Every <Outline>Release</Outline>
+          </>
+        }
+        lede="Everything we've put into the world, newest first. Limited pressings — when they're gone, they're gone."
+      />
+
+      <section className="py-[60px] max-[560px]:py-10">
+        <div className={WRAP}>
+          <div className="grid grid-cols-4 gap-4 max-[1040px]:grid-cols-3 max-[680px]:grid-cols-2">
+            {cards.map((release) => (
+              <PressReleaseCard key={release.slug} release={release} />
+            ))}
+          </div>
+        </div>
+      </section>
+    </PressShell>
   );
 }
