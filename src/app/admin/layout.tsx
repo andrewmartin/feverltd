@@ -23,17 +23,25 @@ export default async function AdminLayout({
 
   return (
     <div className="admin bg-background text-foreground min-h-dvh md:grid md:grid-cols-[16rem_1fr]">
-      <aside className="bg-muted/30 flex flex-col gap-6 border-b p-4 md:sticky md:top-0 md:h-dvh md:border-r md:border-b-0">
-        <div className="flex items-center justify-between">
-          <Link href="/admin" className="font-mono text-sm font-bold tracking-tight">
+      <aside className="bg-card flex flex-col gap-6 border-b-2 border-foreground p-4 md:sticky md:top-0 md:h-dvh md:border-r-2 md:border-b-0">
+        <div className="flex flex-col gap-2 border-b border-border pb-4">
+          <span className="font-press text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
+            Fever LTD — Pressroom
+          </span>
+          <Link
+            href="/admin"
+            className="font-disp text-2xl font-extrabold uppercase leading-none tracking-tight"
+          >
             FEVER<span className="text-primary">.</span>LTD
-            <span className="text-muted-foreground ml-2">CMS</span>
+            <span className="text-muted-foreground ml-2 align-middle font-press text-[10px] tracking-[0.2em]">
+              CMS
+            </span>
           </Link>
         </div>
 
         {authOff ? (
-          <p className="border-primary/30 bg-primary/5 text-primary rounded-md border px-2.5 py-1.5 text-[0.7rem] leading-tight">
-            Dev mode — auth is disabled.
+          <p className="border-primary/30 bg-primary/5 text-primary rounded-md border px-2.5 py-1.5 font-press text-[0.65rem] uppercase tracking-wider leading-tight">
+            Dev mode — auth disabled
           </p>
         ) : null}
 
@@ -43,7 +51,7 @@ export default async function AdminLayout({
           <Separator />
           <Link
             href="/"
-            className="text-muted-foreground hover:bg-muted hover:text-foreground flex items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors"
+            className="text-muted-foreground hover:bg-muted hover:text-foreground flex items-center gap-2 rounded-md px-3 py-2 font-press text-[11px] uppercase tracking-[0.18em] transition-colors"
           >
             <ExternalLinkIcon className="size-4" />
             View site
@@ -60,7 +68,7 @@ export default async function AdminLayout({
             ) : (
               <span
                 aria-hidden
-                className="bg-primary text-primary-foreground flex size-8 shrink-0 items-center justify-center rounded-full text-sm font-bold"
+                className="bg-primary text-primary-foreground flex size-8 shrink-0 items-center justify-center rounded-full font-disp text-sm font-bold"
               >
                 {initial}
               </span>

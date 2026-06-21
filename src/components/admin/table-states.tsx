@@ -14,7 +14,7 @@ export function EmptyState({
 }) {
   return (
     <div className="flex flex-col items-center gap-3 rounded-lg border border-dashed p-12 text-center">
-      <p className="font-medium">{title}</p>
+      <p className="font-disp text-xl font-bold uppercase tracking-tight">{title}</p>
       {description ? (
         <p className="text-muted-foreground text-sm">{description}</p>
       ) : null}

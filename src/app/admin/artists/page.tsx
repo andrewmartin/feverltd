@@ -15,6 +15,7 @@ export default async function ArtistsPage() {
   return (
     <div className="flex flex-col gap-6">
       <PageHeader
+        kicker="Roster"
         title="Artists"
         description={`${artists.length} ${artists.length === 1 ? "artist" : "artists"}`}
         action={

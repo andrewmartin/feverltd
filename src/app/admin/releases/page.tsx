@@ -15,6 +15,7 @@ export default async function ReleasesPage() {
   return (
     <div className="flex flex-col gap-6">
       <PageHeader
+        kicker="Catalog"
         title="Releases"
         description={`${releases.length} ${releases.length === 1 ? "release" : "releases"}`}
         action={

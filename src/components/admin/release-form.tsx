@@ -14,7 +14,7 @@ import { createRelease, updateRelease } from "@/app/admin/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
+import { MultiSelect } from "@/components/ui/multi-select";
 import {
   Select,
   SelectContent,
@@ -32,6 +32,7 @@ type ReleaseFormRecord = {
   catalogNo: string | null;
   description: string | null;
   coverUrl: string | null;
+  buyUrl: string | null;
   releaseDate: Date | string | null;
   status: ReleaseStatus;
   artists: { id: string }[];
@@ -68,6 +69,7 @@ export function ReleaseForm({ artists, release }: ReleaseFormProps) {
       catalogNo: release?.catalogNo ?? "",
       description: release?.description ?? "",
       coverUrl: release?.coverUrl ?? "",
+      buyUrl: release?.buyUrl ?? "",
       releaseDate: toDateInput(release?.releaseDate),
       status: release?.status ?? ReleaseStatus.DRAFT,
       artistIds: release?.artists.map((a) => a.id) ?? [],
@@ -129,33 +131,17 @@ export function ReleaseForm({ artists, release }: ReleaseFormProps) {
         <Controller
           control={control}
           name="artistIds"
-          render={({ field }) => {
-            const selected = field.value ?? [];
-            return (
-              <div className="flex flex-col gap-2 rounded-lg border p-3">
-                {artists.map((artist) => {
-                  const checked = selected.includes(artist.id);
-                  return (
-                    <label
-                      key={artist.id}
-                      className="flex cursor-pointer items-center gap-2 text-sm"
-                    >
-                      <Checkbox
-                        checked={checked}
-                        onCheckedChange={(value) => {
-                          const next = value
-                            ? [...selected, artist.id]
-                            : selected.filter((id) => id !== artist.id);
-                          field.onChange(next);
-                        }}
-                      />
-                      {artist.name}
-                    </label>
-                  );
-                })}
-              </div>
-            );
-          }}
+          render={({ field }) => (
+            <MultiSelect
+              id="artistIds"
+              options={artists.map((a) => ({ value: a.id, label: a.name }))}
+              value={field.value ?? []}
+              onValueChange={field.onChange}
+              placeholder="Search artists…"
+              emptyText="No artists found."
+              disabled={noArtists}
+            />
+          )}
         />
       </Field>
 
@@ -229,6 +215,21 @@ export function ReleaseForm({ artists, release }: ReleaseFormProps) {
               disabled={busy}
             />
           )}
+        />
+      </Field>
+
+      <Field
+        label="Buy link"
+        htmlFor="buyUrl"
+        error={errors.buyUrl?.message}
+        hint="Optional — shown as a “Buy” button on the release page."
+      >
+        <Input
+          id="buyUrl"
+          type="url"
+          placeholder="https://…"
+          autoComplete="off"
+          {...register("buyUrl")}
         />
       </Field>
 

@@ -15,6 +15,7 @@ export default async function NewsPage() {
   return (
     <div className="flex flex-col gap-6">
       <PageHeader
+        kicker="Dispatches"
         title="News"
         description={`${posts.length} ${posts.length === 1 ? "post" : "posts"}`}
         action={

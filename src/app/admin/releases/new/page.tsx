@@ -1,7 +1,6 @@
-import Link from "next/link";
-import { ArrowLeftIcon } from "lucide-react";
 import { listArtistOptions } from "@/lib/cms";
 import { ReleaseForm } from "@/components/admin/release-form";
+import { EditHeader } from "@/components/admin/edit-header";
 
 export const metadata = { title: "New release" };
 
@@ -10,16 +9,11 @@ export default async function NewReleasePage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <header>
-        <Link
-          href="/admin/releases"
-          className="text-muted-foreground hover:text-foreground inline-flex items-center gap-1 text-sm"
-        >
-          <ArrowLeftIcon className="size-3.5" />
-          Releases
-        </Link>
-        <h1 className="mt-2 text-2xl font-bold tracking-tight">New release</h1>
-      </header>
+      <EditHeader
+        backHref="/admin/releases"
+        backLabel="Releases"
+        title="New release"
+      />
       <ReleaseForm artists={artists} />
     </div>
   );
