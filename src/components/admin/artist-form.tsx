@@ -13,8 +13,11 @@ import { createArtist, updateArtist } from "@/app/admin/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { Field, FormError } from "@/components/admin/field";
 import { ImagePicker } from "@/components/admin/image-picker";
+import { InfoIcon } from "lucide-react";
 
 export function ArtistForm({ artist }: { artist?: Artist }) {
   const router = useRouter();
@@ -35,6 +38,9 @@ export function ArtistForm({ artist }: { artist?: Artist }) {
       bio: artist?.bio ?? "",
       imageUrl: artist?.imageUrl ?? "",
       website: artist?.website ?? "",
+      location: artist?.location ?? "",
+      genre: artist?.genre ?? "",
+      alumni: artist?.alumni ?? false,
     },
   });
 
@@ -76,6 +82,26 @@ export function ArtistForm({ artist }: { artist?: Artist }) {
         <Input id="slug" placeholder="auto-generated" autoComplete="off" {...register("slug")} />
       </Field>
 
+      <div className="grid grid-cols-2 gap-5 max-[560px]:grid-cols-1">
+        <Field
+          label="Based"
+          htmlFor="location"
+          error={errors.location?.message}
+          hint="Where they're from, e.g. “Birmingham, AL”."
+        >
+          <Input id="location" autoComplete="off" {...register("location")} />
+        </Field>
+
+        <Field
+          label="Sound"
+          htmlFor="genre"
+          error={errors.genre?.message}
+          hint="Genre, e.g. “Post-hardcore”."
+        >
+          <Input id="genre" autoComplete="off" {...register("genre")} />
+        </Field>
+      </div>
+
       <Field label="Bio" htmlFor="bio" error={errors.bio?.message}>
         <Textarea id="bio" rows={5} {...register("bio")} />
       </Field>
@@ -97,6 +123,47 @@ export function ArtistForm({ artist }: { artist?: Artist }) {
       <Field label="Website" htmlFor="website" error={errors.website?.message}>
         <Input id="website" type="url" placeholder="https://…" {...register("website")} />
       </Field>
+
+      <Controller
+        control={control}
+        name="alumni"
+        render={({ field }) => (
+          <div className="group/field flex items-start gap-3 rounded-md border border-input p-4 has-data-checked:border-primary/50">
+            <Checkbox
+              id="alumni"
+              checked={!!field.value}
+              onCheckedChange={field.onChange}
+              disabled={busy}
+              className="mt-0.5"
+            />
+            <span className="flex flex-col gap-0.5">
+              <span className="flex items-center gap-1.5">
+                <label htmlFor="alumni" className="text-sm font-medium leading-none">
+                  Alumni
+                </label>
+                <Tooltip>
+                  <TooltipTrigger
+                    render={<button type="button" />}
+                    aria-label="What does Alumni mean?"
+                    className="text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    <InfoIcon className="size-3.5" />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    Tick this for a band that used to be signed to Fever but has
+                    since left. Their artist page shows an “Alumni” badge so
+                    visitors know they’re no longer active on the label — they stay
+                    listed and all their releases keep working.
+                  </TooltipContent>
+                </Tooltip>
+              </span>
+              <span className="text-xs text-muted-foreground">
+                Formerly signed but no longer on Fever. Shown with an “Alumni” badge.
+              </span>
+            </span>
+          </div>
+        )}
+      />
 
       <FormError message={formError} />
 

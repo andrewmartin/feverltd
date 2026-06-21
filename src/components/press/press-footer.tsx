@@ -15,7 +15,6 @@ const EXPLORE = [
 
 const LABEL = [
   { href: "/about", label: "About" },
-  { href: "/#demos", label: "Demos" },
   { href: "mailto:kamtin.mohager@gmail.com", label: "Contact" },
 ];
 
@@ -62,7 +61,7 @@ export async function PressFooter() {
       <footer className="relative overflow-hidden border-t-2 border-rule pb-[38px] pt-[72px]">
         <FeverF
           aria-hidden
-          className="pointer-events-none absolute right-[-12px] top-[-30px] h-[clamp(160px,27vw,360px)] w-auto select-none text-fever opacity-[0.92] max-[900px]:opacity-45"
+          className="pointer-events-none absolute bottom-[-40px] right-[-90px] h-[clamp(160px,27vw,360px)] w-auto select-none text-fever opacity-[0.92] max-[900px]:opacity-45"
         />
         <div className={WRAP}>
           <div className="relative z-[2] mb-[58px] grid grid-cols-[1.5fr_1fr_1fr] gap-10 max-[900px]:grid-cols-1 max-[900px]:gap-[34px]">

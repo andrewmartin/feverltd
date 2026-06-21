@@ -15,6 +15,9 @@ type ArtistSeed = {
   slug: string;
   bio: string;
   imageUrl: string;
+  location: string;
+  genre: string;
+  website: string;
 };
 
 type ReleaseSeed = {
@@ -42,18 +45,27 @@ const ARTISTS: ArtistSeed[] = [
     slug: "the-chain-gang-of-1974",
     bio: "The Chain Gang of 1974 is the solo electronic / synth-rock project of Kamtin Mohager — the songwriter who founded Fever LTD. Across a decade of records he's built a widescreen, synth-forward sound that bridges indie and dance, from festival stages to the vinyl he now presses himself. Recent Fever LTD releases include 'Honey Moon Drips' and 'Besides/Pollen'.",
     imageUrl: "/reference/artists/Chain%20Gang%20of%201974/05-spotify-artist.jpg",
+    location: "Los Angeles, CA",
+    genre: "Synth-rock / electronic",
+    website: "https://chaingangof1974.bandcamp.com",
   },
   {
     name: "Mascara",
     slug: "mascara",
     bio: "Mascara are a four-piece from Paris turning shoegaze heavy — blown-out low end, walls of guitar, and melody buried deep in the haze. Equal parts alt-gaze and post-hardcore, they trade dream-pop prettiness for sheer weight. Their debut LP 'Going Postal' arrived on Fever LTD in March 2026, pressed to a limited run of vinyl.",
     imageUrl: "/reference/artists/Mascara/04-press-photo-releasewave.jpg",
+    location: "Paris, France",
+    genre: "Alt-gaze / heavy shoegaze",
+    website: "https://worshipmascara.bandcamp.com",
   },
   {
     name: "Valley of Doves",
     slug: "valley-of-doves",
     bio: "Valley of Doves are a post-hardcore band from Birmingham, Alabama. Patient and cathartic, they build songs for the room's last moment — slow-burning tension that breaks wide open. Their record 'Constant Remembrance of Wanting Nothing' arrived on CD via Fever LTD in 2026.",
     imageUrl: "/reference/artists/Valley%20of%20Doves/07-promo-john-scarlett.jpg",
+    location: "Birmingham, AL",
+    genre: "Post-hardcore",
+    website: "https://valleyofdoves.bandcamp.com",
   },
   {
     name: "Teenage Wrist",
@@ -61,30 +73,45 @@ const ARTISTS: ArtistSeed[] = [
     bio: "Teenage Wrist are an LA alternative band — Marshall Gallagher and Anthony Salazar — trading in fuzzed-out, melodic shoegaze and grunge. Longtime Epitaph travelers, they pair big hooks with a wall of distortion. Their album 'Dazed' returned as a 2025 remaster on Fever LTD across two color-variant vinyl pressings.",
     imageUrl:
       "/reference/artists/Teenage%20Wrist/01-epitaph-press-photo-joe-calixto.png",
+    location: "Los Angeles, CA",
+    genre: "Alternative / shoegaze",
+    website: "https://teenagewrist.com",
   },
   {
     name: "Muted Color",
     slug: "muted-color",
     bio: "Muted Color are a Chicago five-piece — Tom Aparici, David Bieschke, Tyler Gargula, Brandon Montemayor and Jethro Tacuboy — washing dream-pop melodies in shoegaze haze. Their sound is all reverb-soaked guitars and buried vocals. Fever LTD has pressed their LP 'Take I Lovely You' to vinyl and 'Radial' to cassette.",
     imageUrl: "/reference/artists/Muted%20Color/01-band-photo-bandcamp.jpg",
+    location: "Chicago, IL",
+    genre: "Shoegaze / dream-pop",
+    website: "https://mutedcolorband.bandcamp.com",
   },
   {
     name: "Fly Over States",
     slug: "fly-over-states",
     bio: "Fly Over States are a Montana screamo / post-hardcore quartet — Gunnar Stephan, Trevin Baker, Caleb Haynes and Jax Sutton. Urgent and raw (and yes, the band — not the country song), they swing between blistering aggression and melodic release. Their EP 'Ghosts' landed on CD via Fever LTD in 2024.",
     imageUrl: "/reference/artists/Fly%20Over%20States/05-press-photo-2024.jpg",
+    location: "Billings, MT",
+    genre: "Post-hardcore / screamo",
+    website: "https://flyoverstatesband.bandcamp.com",
   },
   {
     name: "En Masse",
     slug: "en-masse",
     bio: "En Masse are a Connecticut post-hardcore band fronted by Zack Santiago, with Jari Javier on guitar and Peter Parkes on bass. Direct and unrelenting, they keep things lean and heavy. Their EP 'newviolenttrends' arrived on CD via Fever LTD in June 2025.",
     imageUrl: "/reference/artists/En%20Masse/02-press-photo-frontview.jpg",
+    location: "Connecticut",
+    genre: "Post-hardcore",
+    website: "https://enmasseband.bandcamp.com",
   },
   {
     name: "Dogs Run Free",
     slug: "dogs-run-free",
     bio: "Dogs Run Free are an alt-rock duo from Cleveland, Ohio — Austyn Benyak and Zac Breitbach. Lean and melodic, they make the most of two players and no filler. Their EP 'Normal' got a limited cassette pressing on Fever LTD in 2024.",
     imageUrl: "/reference/artists/Dogs%20Run%20Free/02-bandcamp-band-photo.jpg",
+    location: "Cleveland, OH",
+    genre: "Alt-rock",
+    website: "https://dawgsrunfree.bandcamp.com",
   },
 ];
 
@@ -272,12 +299,22 @@ async function main() {
   for (const a of ARTISTS) {
     const artist = await prisma.artist.upsert({
       where: { slug: a.slug },
-      update: { name: a.name, bio: a.bio, imageUrl: a.imageUrl },
+      update: {
+        name: a.name,
+        bio: a.bio,
+        imageUrl: a.imageUrl,
+        location: a.location,
+        genre: a.genre,
+        website: a.website,
+      },
       create: {
         name: a.name,
         slug: a.slug,
         bio: a.bio,
         imageUrl: a.imageUrl,
+        location: a.location,
+        genre: a.genre,
+        website: a.website,
       },
     });
     artistIdBySlug.set(a.slug, artist.id);

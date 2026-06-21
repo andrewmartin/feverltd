@@ -16,6 +16,9 @@ function makeArtist(name: string, slug: string): Artist {
     bio: null,
     imageUrl: null,
     website: null,
+    location: null,
+    genre: null,
+    alumni: false,
     createdAt: now,
     updatedAt: now,
   };

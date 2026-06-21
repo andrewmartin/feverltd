@@ -78,6 +78,12 @@ model Artist {
   bio       String?   @db.Text
   imageUrl  String?
   website   String?
+  // "Based" — where the artist is from, e.g. "Birmingham, AL".
+  location  String?
+  // "Sound" — the artist's genre, e.g. "Post-hardcore".
+  genre     String?
+  // Formerly signed but no longer on the label. Surfaced as an "Alumni" badge.
+  alumni    Boolean   @default(false)
   // Many-to-many: a release can credit multiple artists (splits, comps) and an
   // artist appears on many releases. Implicit join table (_ArtistToRelease).
   releases  Release[] @relation("ArtistReleases")

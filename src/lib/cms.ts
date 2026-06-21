@@ -59,6 +59,10 @@ export const artistSchema = z.object({
   bio: optionalText,
   imageUrl: optionalImageUrl,
   website: optionalUrl,
+  location: optionalText,
+  genre: optionalText,
+  // Formerly signed but no longer on the label.
+  alumni: z.boolean().optional().default(false),
 });
 
 export type ArtistInput = z.input<typeof artistSchema>;

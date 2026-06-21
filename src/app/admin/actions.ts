@@ -77,11 +77,11 @@ export async function createArtist(input: ArtistInput): Promise<ActionResult> {
   if (!parsed.success) {
     return { ok: false, error: parsed.error.issues[0]?.message ?? "Invalid input" };
   }
-  const { name, slug, bio, imageUrl, website } = parsed.data;
+  const { name, slug, bio, imageUrl, website, location, genre, alumni } = parsed.data;
 
   try {
     await prisma.artist.create({
-      data: { name, slug: slug ?? slugify(name), bio, imageUrl, website },
+      data: { name, slug: slug ?? slugify(name), bio, imageUrl, website, location, genre, alumni },
     });
   } catch (error) {
     const friendly = uniqueError(error);
@@ -102,7 +102,7 @@ export async function updateArtist(
   if (!parsed.success) {
     return { ok: false, error: parsed.error.issues[0]?.message ?? "Invalid input" };
   }
-  const { name, slug, bio, imageUrl, website } = parsed.data;
+  const { name, slug, bio, imageUrl, website, location, genre, alumni } = parsed.data;
 
   const previous = await prisma.artist.findUnique({
     where: { id },
@@ -118,6 +118,9 @@ export async function updateArtist(
         bio: bio ?? null,
         imageUrl: imageUrl ?? null,
         website: website ?? null,
+        location: location ?? null,
+        genre: genre ?? null,
+        alumni,
       },
     });
   } catch (error) {

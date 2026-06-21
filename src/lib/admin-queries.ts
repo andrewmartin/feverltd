@@ -23,6 +23,8 @@ export type SerializedArtist = {
   bio: string | null;
   imageUrl: string | null;
   website: string | null;
+  location: string | null;
+  genre: string | null;
   createdAt: string;
   updatedAt: string;
   _count: { releases: number };
