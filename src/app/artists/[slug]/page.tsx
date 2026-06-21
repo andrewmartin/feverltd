@@ -257,7 +257,7 @@ export default async function ArtistDetailPage({ params }: PageProps) {
               href="/releases"
               label="All releases →"
             >
-              Their <Outline>Releases</Outline>
+              <Outline>Releases</Outline>
               <span className="text-fever">.</span>
             </PressSectionHead>
           </div>
