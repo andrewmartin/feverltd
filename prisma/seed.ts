@@ -65,7 +65,7 @@ const ARTISTS: ArtistSeed[] = [
     imageUrl: "/reference/artists/Valley%20of%20Doves/07-promo-john-scarlett.jpg",
     location: "Birmingham, AL",
     genre: "Post-hardcore",
-    website: "https://valleyofdoves.bandcamp.com",
+    website: "https://linktr.ee/valleyofdoves",
   },
   {
     name: "Teenage Wrist",
@@ -84,7 +84,7 @@ const ARTISTS: ArtistSeed[] = [
     imageUrl: "/reference/artists/Muted%20Color/01-band-photo-bandcamp.jpg",
     location: "Chicago, IL",
     genre: "Shoegaze / dream-pop",
-    website: "https://mutedcolorband.bandcamp.com",
+    website: "https://linktr.ee/mutedcolor",
   },
   {
     name: "Fly Over States",
@@ -111,7 +111,7 @@ const ARTISTS: ArtistSeed[] = [
     imageUrl: "/reference/artists/Dogs%20Run%20Free/02-bandcamp-band-photo.jpg",
     location: "Cleveland, OH",
     genre: "Alt-rock",
-    website: "https://dawgsrunfree.bandcamp.com",
+    website: "https://linktr.ee/dogsrunfree",
   },
 ];
 
