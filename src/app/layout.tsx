@@ -67,13 +67,13 @@ const baseUrl =
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: "Fever Ltd — Record Label",
+    default: "FEVER LTD — NOISE & CULTURE",
     template: "%s · Fever Ltd",
   },
   description:
     "Fever Ltd is an independent record label out of Los Angeles — noise and culture, loud records pressed properly.",
   openGraph: {
-    title: "Fever Ltd — Record Label",
+    title: "FEVER LTD — NOISE & CULTURE",
     description:
       "An independent record label out of Los Angeles — noise and culture, loud records pressed properly.",
     type: "website",
@@ -81,7 +81,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Fever Ltd — Record Label",
+    title: "FEVER LTD — NOISE & CULTURE",
     description:
       "An independent record label out of Los Angeles — noise and culture, loud records pressed properly.",
   },
