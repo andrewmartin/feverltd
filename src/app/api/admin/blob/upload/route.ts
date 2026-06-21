@@ -16,6 +16,12 @@ export async function POST(request: Request): Promise<NextResponse> {
     const json = await handleUpload({
       body,
       request,
+      // The Blob store is connected with a `FEVER_` prefix, so the SDK's
+      // default `BLOB_READ_WRITE_TOKEN` lookup misses. Pass it explicitly
+      // (preferring the standard name if it's ever added).
+      token:
+        process.env.BLOB_READ_WRITE_TOKEN ??
+        process.env.FEVER_READ_WRITE_TOKEN,
       onBeforeGenerateToken: async () => {
         const session = await getAdminSession();
         if (!session) throw new Error("Unauthorized");
