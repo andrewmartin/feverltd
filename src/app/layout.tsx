@@ -50,8 +50,22 @@ const spaceMono = Space_Mono({
  */
 const THEME_INIT = `(function(){try{var s=localStorage.getItem('fever-theme');var d=s==='dark'||(!s&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.setAttribute('data-theme',d?'dark':'light');}catch(e){}})();`;
 
+/**
+ * Resolve the canonical base URL for absolute metadata (og:image, etc.).
+ * Production uses the project's stable production domain (feverltd.vercel.app
+ * today, feverltd.com once the custom domain is attached); previews advertise
+ * their own deployment URL so share images resolve there too; local dev falls
+ * back to the non-standard dev port.
+ */
+const baseUrl =
+  process.env.VERCEL_ENV === "production"
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : "http://localhost:7878";
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://feverltd.com"),
+  metadataBase: new URL(baseUrl),
   title: {
     default: "Fever Ltd — Record Label",
     template: "%s · Fever Ltd",
