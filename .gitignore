@@ -43,3 +43,9 @@ next-env.d.ts
 /prisma/*.db
 /src/generated/
 .env*
+
+# playwright-mcp scratch output
+/.playwright-mcp/
+
+# local verification screenshots
+verify-*.png
