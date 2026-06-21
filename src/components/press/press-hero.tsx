@@ -127,12 +127,6 @@ export function PressHero({ artists }: { artists: HeroArtist[] }) {
                 <span className="h-0 w-0 border-y-[5px] border-l-[7px] border-y-transparent border-l-white" />
                 Listen
               </Link>
-              <Link
-                href={`/artists/${a.slug}`}
-                className="font-press text-[11px] uppercase tracking-[0.16em] text-quiet transition-colors hover:text-ink"
-              >
-                Profile →
-              </Link>
             </div>
           </aside>
         </div>
