@@ -7,6 +7,7 @@ import { MobileNav } from "./mobile-nav";
 import { FeverLogo } from "./fever-logo";
 
 const NAV_LINKS = [
+  { href: "/shop", label: "Shop" },
   { href: "/releases", label: "Releases" },
   { href: "/artists", label: "Artists" },
   { href: "/#about", label: "About" },
