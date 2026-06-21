@@ -15,7 +15,7 @@ const EXPLORE = [
 
 const LABEL = [
   { href: "/about", label: "About" },
-  { href: "mailto:kamtin.mohager@gmail.com", label: "Contact" },
+  { href: "mailto:kamtinmohager@gmail.com", label: "Contact" },
 ];
 
 function FootCol({

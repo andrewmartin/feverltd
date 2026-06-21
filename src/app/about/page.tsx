@@ -5,7 +5,7 @@ import { Outline } from "@/components/press/section-head";
 
 const WRAP = "mx-auto w-full max-w-[1280px] px-[34px] max-[560px]:px-5";
 
-const CONTACT_EMAIL = "kamtin.mohager@gmail.com";
+const CONTACT_EMAIL = "kamtinmohager@gmail.com";
 
 export const metadata: Metadata = {
   title: "About",
