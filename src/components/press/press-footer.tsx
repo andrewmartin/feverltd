@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getAdminSession } from "@/auth";
+import { auth, getAdminSession, signOut } from "@/auth";
 import { FeverF } from "@/components/site/fever-f";
 import { SocialLinks } from "./social-links";
 import { NewsletterForm } from "./newsletter-form";
@@ -56,6 +56,7 @@ function FootCol({
 
 export async function PressFooter() {
   const isAdmin = Boolean(await getAdminSession());
+  const isSignedIn = Boolean((await auth().catch(() => null))?.user);
   return (
     <>
       <footer className="relative overflow-hidden border-t-2 border-rule pb-[38px] pt-[72px]">
@@ -87,6 +88,22 @@ export async function PressFooter() {
                 >
                   Admin →
                 </Link>
+              ) : null}
+              {isSignedIn ? (
+                <form
+                  action={async () => {
+                    "use server";
+                    await signOut({ redirectTo: "/" });
+                  }}
+                  className="inline"
+                >
+                  <button
+                    type="submit"
+                    className="font-press text-[11px] uppercase tracking-[0.22em] text-quiet transition-colors hover:text-fever"
+                  >
+                    Sign out →
+                  </button>
+                </form>
               ) : null}
             </span>
             <SocialLinks variant="footer" />

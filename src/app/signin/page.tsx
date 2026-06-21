@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth, signIn } from "@/auth";
+import { Outline } from "@/components/press/section-head";
 
 export const metadata: Metadata = {
   title: "Sign in",
@@ -41,58 +42,47 @@ export default async function SignInPage() {
   if (session?.user) redirect("/");
 
   return (
-    <main className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_-20%,rgba(230,255,58,0.12),transparent_50%)]"
-      />
-
-      <div className="relative w-full max-w-sm">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 focus-visible:outline-none"
-          aria-label="Fever Ltd — home"
-        >
-          <span className="inline-block h-2.5 w-2.5 rounded-full bg-accent" />
-          <span className="font-mono text-sm font-bold uppercase tracking-[0.2em]">
-            Fever Ltd
-          </span>
-        </Link>
-
-        <h1 className="mt-10 text-4xl font-bold tracking-tighter">
-          Welcome back.
-        </h1>
-        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-          Sign in to manage the label. Access is limited to label staff — if
-          you&apos;re a fan, just{" "}
-          <Link href="/releases" className="text-accent hover:underline">
-            browse the catalog
-          </Link>
-          .
-        </p>
-
-        <form
-          className="mt-8"
-          action={async () => {
-            "use server";
-            await signIn("google", { redirectTo: "/admin" });
-          }}
-        >
-          <button
-            type="submit"
-            className="flex w-full items-center justify-center gap-3 border border-border bg-foreground px-6 py-3 font-mono text-xs font-bold uppercase tracking-widest text-background transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+    <div className="pressroom">
+      <main className="flex min-h-screen flex-col items-center justify-center bg-canvas px-6 text-ink">
+        <div className="w-full max-w-[420px]">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2.5 focus-visible:outline-none"
+            aria-label="Fever Ltd — home"
           >
-            <GoogleMark />
-            Continue with Google
-          </button>
-        </form>
-
-        <p className="mt-8 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
-          <Link href="/" className="transition-colors hover:text-foreground">
-            ← Back home
+            <span className="inline-block h-2.5 w-2.5 rounded-full bg-fever" />
+            <span className="font-press text-[13px] font-bold uppercase tracking-[0.26em]">
+              Fever Ltd
+            </span>
           </Link>
-        </p>
-      </div>
-    </main>
+
+          <h1 className="mt-10 font-disp text-[clamp(44px,9vw,76px)] font-extrabold uppercase leading-[0.88] tracking-[-0.01em]">
+            Welcome <Outline>Back</Outline>
+          </h1>
+
+          <form
+            className="mt-8"
+            action={async () => {
+              "use server";
+              await signIn("google", { redirectTo: "/admin" });
+            }}
+          >
+            <button
+              type="submit"
+              className="flex w-full items-center justify-center gap-3 border-2 border-ink bg-ink px-6 py-3.5 font-press text-[12px] font-bold uppercase tracking-[0.22em] text-canvas transition-colors hover:bg-fever hover:border-fever focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fever focus-visible:ring-offset-2 focus-visible:ring-offset-canvas"
+            >
+              <GoogleMark />
+              Continue with Google
+            </button>
+          </form>
+
+          <p className="mt-9 border-t-2 border-rule pt-7 font-press text-[11px] uppercase tracking-[0.26em] text-quiet">
+            <Link href="/" className="transition-colors hover:text-fever">
+              ← Back home
+            </Link>
+          </p>
+        </div>
+      </main>
+    </div>
   );
 }
