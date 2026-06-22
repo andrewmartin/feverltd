@@ -62,7 +62,7 @@ export const PRESS_HERO_ARTISTS: HeroArtist[] = [
   {
     name: "Valley of Doves",
     slug: "valley-of-doves",
-    photo: "/reference/artists/Valley%20of%20Doves/07-promo-john-scarlett.jpg",
+    photo: "/reference/artists/Valley%20of%20Doves/08-promo-r6i9710.jpg",
     loc: "Birmingham, AL",
     genre: "Post-hardcore",
     bio: "Birmingham, Alabama post-hardcore — patient and cathartic, built for the room's last song.",

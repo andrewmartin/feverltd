@@ -62,7 +62,7 @@ const ARTISTS: ArtistSeed[] = [
     name: "Valley of Doves",
     slug: "valley-of-doves",
     bio: "Valley of Doves are a post-hardcore band from Birmingham, Alabama. Patient and cathartic, they build songs for the room's last moment — slow-burning tension that breaks wide open. Their record 'Constant Remembrance of Wanting Nothing' arrived on CD via Fever LTD in 2026.",
-    imageUrl: "/reference/artists/Valley%20of%20Doves/07-promo-john-scarlett.jpg",
+    imageUrl: "/reference/artists/Valley%20of%20Doves/08-promo-r6i9710.jpg",
     location: "Birmingham, AL",
     genre: "Post-hardcore",
     website: "https://linktr.ee/valleyofdoves",
