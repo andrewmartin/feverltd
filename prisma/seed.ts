@@ -292,7 +292,25 @@ const NEWS: NewsSeed[] = [
   },
 ];
 
+// ⚠️  CLAUDE / DEV NOTE — WE ARE LIVE IN PRODUCTION (since 2026-06).
+// This seed UPSERTS by slug. It does not delete rows, but every run OVERWRITES
+// the live artist/release/news fields (imageUrl, bio, copy, …) back to the
+// hardcoded values below — clobbering any edits made in production (e.g. the
+// Valley of Doves photo swap, admin changes). DO NOT reseed prod casually.
+//
+// As a safeguard, this script refuses to run unless ALLOW_SEED=1 is set:
+//   ALLOW_SEED=1 bun run prisma/seed.ts
+// Intended only for a fresh/empty database (initial bootstrap or local dev).
 async function main() {
+  if (process.env.ALLOW_SEED !== "1") {
+    console.error(
+      "✋ Seed aborted. Fever LTD is LIVE and this seed overwrites production " +
+        "content by slug. If you really mean to (re)seed, re-run with " +
+        "ALLOW_SEED=1 — and confirm you are NOT pointed at the prod database.",
+    );
+    process.exit(1);
+  }
+
   console.log("🌱 Seeding Fever LTD…");
 
   const artistIdBySlug = new Map<string, string>();

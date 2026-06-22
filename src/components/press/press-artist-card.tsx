@@ -79,7 +79,7 @@ export function PressArtistCard({
             </>
           ) : null}
         </dl>
-        <span className="mt-3.5 -translate-x-1 font-press text-[10px] uppercase tracking-[0.16em] text-quiet opacity-0 transition group-hover:translate-x-0 group-hover:text-ink group-hover:opacity-100">
+        <span className="mt-3.5 font-press text-[10px] uppercase tracking-[0.16em] text-quiet transition-colors group-hover:text-ink">
           Profile →
         </span>
       </div>
