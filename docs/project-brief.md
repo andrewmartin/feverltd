@@ -116,7 +116,7 @@ legit" — with a polished, professional record-label site that drives sales.
 | Domain registrar | GoDaddy | Kamtin |
 | Hosting (current → new) | Contentful + DigitalOcean → Vercel | Kamtin / Andrew |
 | Online store / payments | Big Cartel | Kamtin |
-| Business email | `kamtinmohager@gmail.com` | Kamtin |
+| Business email | `kamtin.mohager@gmail.com` | Kamtin |
 | Newsletter | TBD | — |
 
 ## 8. Action Items / Next Steps

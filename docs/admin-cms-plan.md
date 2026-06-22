@@ -17,7 +17,7 @@ zod** (forms), and **server actions** (mutations) with **sonner** toasts.
 | ORM | **Prisma** (already wired). Postgres via **Postgres.app** locally. |
 | Local DB | `feverltd` on `postgresql://andrewmartin@localhost:5432/feverltd`. |
 | Auth (dev) | **Turned OFF** via `ADMIN_AUTH_DISABLED="true"`. Guard pattern stays wired everywhere; the shared helper short-circuits to a synthetic admin. Hard-fails closed in production. |
-| Auth (prod) | Google sign-in + email allowlist: `hello@andrewmart.in`, `kamtinmohager@gmail.com`. |
+| Auth (prod) | Google sign-in + email allowlist: `hello@andrewmart.in`, `kamtin.mohager@gmail.com`. |
 | Release ↔ Artist | **Many-to-many** (implicit join `_ArtistToRelease`). A release can credit multiple artists; an artist appears on many releases. |
 | Delete safety | **Restrict**: deleting an artist that still has releases is **blocked** (enforced in the server action). |
 | Create flow | **Separate sections**: create Artists first, then pick them (multi-select) on the Release form. |
@@ -104,7 +104,7 @@ Shared building blocks every agent reuses:
 **Foundation**
 - [x] Local Postgres.app DB `feverltd` + env wired
 - [x] `ADMIN_AUTH_DISABLED` dev bypass (helper + session + proxy)
-- [x] Add `kamtinmohager@gmail.com` to allowlist
+- [x] Add `kamtin.mohager@gmail.com` to allowlist
 - [x] `NewsPost` + `PostStatus` model, M:N Release↔Artist, `db push`
 - [x] shadcn init + core components + `.admin` light theme
 - [x] `cms.ts` schemas + admin reads (M:N, news)
