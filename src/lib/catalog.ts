@@ -61,14 +61,11 @@ export async function getReleaseBySlug(
 }
 
 /**
- * Every artist that has at least one published release, alphabetical.
- * Artists with only drafts are hidden from the public site.
+ * Every artist, alphabetical. Artists without a published release still appear
+ * on the public site — their detail page simply shows an empty catalog state.
  */
 export async function getAllArtists(): Promise<Artist[]> {
   return prisma.artist.findMany({
-    where: {
-      releases: { some: { status: ReleaseStatus.PUBLISHED } },
-    },
     orderBy: { name: "asc" },
   });
 }

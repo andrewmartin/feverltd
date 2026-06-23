@@ -73,13 +73,14 @@ function viewFromDb(a: ArtistWithReleases): ArtistView {
 }
 
 /**
- * Resolve the artist for display. Prefer a real DB row that has at least one
- * published release; otherwise fall back to the curated roster (so the page
- * stays whole in local dev with an empty DB). A true miss is a 404.
+ * Resolve the artist for display. Prefer a real DB row (even one with no
+ * published releases — its catalog just renders an empty state); otherwise fall
+ * back to the curated roster (so the page stays whole in local dev with an empty
+ * DB). A true miss is a 404.
  */
 async function resolveView(slug: string): Promise<ArtistView | null> {
   const db = await loadArtist(slug);
-  if (db && db.releases.length > 0) return viewFromDb(db);
+  if (db) return viewFromDb(db);
 
   const curated = curatedArtistBySlug(slug);
   if (curated) {
@@ -249,18 +250,18 @@ export default async function ArtistDetailPage({ params }: PageProps) {
         </section>
       ) : null}
 
-      {artist.releases.length > 0 ? (
-        <section className="pb-[80px] pt-[20px]">
-          <div className={WRAP}>
-            <PressSectionHead
-              kicker="(02) — Catalog"
-              href="/releases"
-              label="All releases →"
-            >
-              <Outline>Releases</Outline>
-              <span className="text-fever">.</span>
-            </PressSectionHead>
-          </div>
+      <section className="pb-[80px] pt-[20px]">
+        <div className={WRAP}>
+          <PressSectionHead
+            kicker="(02) — Catalog"
+            href="/releases"
+            label="All releases →"
+          >
+            <Outline>Releases</Outline>
+            <span className="text-fever">.</span>
+          </PressSectionHead>
+        </div>
+        {artist.releases.length > 0 ? (
           <div className={`${WRAP} mt-[34px]`}>
             <div className="grid grid-cols-4 gap-4 max-[1040px]:grid-cols-3 max-[680px]:grid-cols-2">
               {artist.releases.map((r) => (
@@ -268,8 +269,20 @@ export default async function ArtistDetailPage({ params }: PageProps) {
               ))}
             </div>
           </div>
-        </section>
-      ) : null}
+        ) : (
+          <div className={`${WRAP} mt-[34px]`}>
+            <div className="flex flex-col items-start gap-3 border border-rule bg-surface px-[34px] py-[52px] max-[560px]:px-6">
+              <span className="font-press text-[11px] uppercase tracking-[0.26em] text-fever">
+                Coming soon
+              </span>
+              <p className="max-w-[48ch] font-editorial text-[19px] leading-[1.5] text-ink max-[760px]:text-[17px]">
+                No releases yet from {artist.name}. Check back soon — new music
+                is on the way.
+              </p>
+            </div>
+          </div>
+        )}
+      </section>
     </PressShell>
   );
 }
