@@ -63,7 +63,7 @@ export async function generateMetadata({
       title,
       description,
       type: "music.album",
-      images: [{ url: c.cover }],
+      images: c.cover ? [{ url: c.cover }] : undefined,
     },
   };
 }

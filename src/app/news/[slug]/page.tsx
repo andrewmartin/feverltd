@@ -36,7 +36,9 @@ export async function generateMetadata({
       title: item.title,
       description,
       type: "article",
-      images: [{ url: item.thumb }],
+      // Fall back to the default Fever LTD share image when a dispatch has no
+      // hero image (DB posts may have none) rather than emitting an empty og:image.
+      images: item.thumb ? [{ url: item.thumb }] : undefined,
     },
   };
 }
