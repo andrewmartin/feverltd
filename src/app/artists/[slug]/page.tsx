@@ -236,7 +236,7 @@ export default async function ArtistDetailPage({ params }: PageProps) {
           <div className={WRAP}>
             <div className="grid grid-cols-[0.42fr_1fr] gap-x-[44px] gap-y-6 max-[760px]:grid-cols-1">
               <span className="font-press text-[11px] uppercase tracking-[0.26em] text-fever">
-                (01) — Biography
+                Biography
               </span>
               <div className="max-w-[64ch] font-editorial text-[19px] leading-[1.62] text-ink max-[760px]:text-[17px]">
                 {artist.bio.split(/\n{2,}/).map((para, i) => (
@@ -253,7 +253,7 @@ export default async function ArtistDetailPage({ params }: PageProps) {
       <section className="pb-[80px] pt-[20px]">
         <div className={WRAP}>
           <PressSectionHead
-            kicker="(02) — Catalog"
+            kicker="Catalog"
             href="/releases"
             label="All releases →"
           >

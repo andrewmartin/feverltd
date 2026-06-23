@@ -34,7 +34,7 @@ export function PressReleases({ releases }: { releases: PressRelease[] }) {
   return (
     <section className="py-[70px]" id="releases">
       <div className={WRAP}>
-        <PressSectionHead kicker="(02) — Catalog" href="/releases" label="All releases →">
+        <PressSectionHead kicker="Catalog" href="/releases" label="All releases →">
           Latest <Outline>Releases</Outline>
           <span className="text-fever">.</span>
         </PressSectionHead>

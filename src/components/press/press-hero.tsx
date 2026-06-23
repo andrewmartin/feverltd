@@ -39,7 +39,7 @@ export function PressHero({ artists }: { artists: HeroArtist[] }) {
       <div className={WRAP}>
         <div className="mb-5 flex items-end justify-between gap-[18px] max-[560px]:flex-col max-[560px]:items-start max-[560px]:gap-3">
           <span className="font-press text-[11px] uppercase tracking-[0.26em] text-fever">
-            (01) — Artists
+            Artists
           </span>
           <div className="whitespace-nowrap font-press text-[13px] tracking-[0.12em] text-quiet">
             <b className="font-bold text-ink">{pad(i + 1)}</b>
@@ -89,6 +89,11 @@ export function PressHero({ artists }: { artists: HeroArtist[] }) {
                 <span className="text-fever">.</span>
               </h1>
             </div>
+            <Link
+              href={`/artists/${a.slug}`}
+              aria-label={`View ${a.name}`}
+              className="absolute inset-0 z-[4] focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-fever"
+            />
           </div>
 
           <aside className="relative flex flex-col overflow-hidden border-l border-rule px-[30px] py-[34px] max-[900px]:border-l-0 max-[900px]:border-t">
@@ -132,7 +137,7 @@ export function PressHero({ artists }: { artists: HeroArtist[] }) {
         </div>
 
         <div className="mt-[18px] flex items-center justify-between">
-          <div className="flex items-center gap-[9px]">
+          <div className="flex items-center gap-[9px] max-[560px]:hidden">
             {artists.map((art, k) => (
               <button
                 key={art.slug}
@@ -144,6 +149,11 @@ export function PressHero({ artists }: { artists: HeroArtist[] }) {
                 )}
               />
             ))}
+          </div>
+          <div className="hidden font-press text-[11px] tracking-[0.12em] text-quiet max-[560px]:block">
+            <b className="font-bold text-ink">{pad(i + 1)}</b>
+            <span className="px-1.5 opacity-60">of</span>
+            <span className="opacity-60">{pad(total)}</span>
           </div>
           <div className="flex gap-2">
             <button

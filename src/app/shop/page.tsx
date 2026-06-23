@@ -38,7 +38,7 @@ export default async function ShopPage() {
   return (
     <PressShell>
       <PressPageHead
-        kicker="(04) — Store"
+        kicker="Store"
         title={
           <>
             The <Outline>Shop</Outline>

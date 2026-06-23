@@ -28,7 +28,7 @@ export default async function ReleasesPage() {
   return (
     <PressShell>
       <PressPageHead
-        kicker="(02) — Catalog"
+        kicker="Catalog"
         title={
           <>
             Every <Outline>Release</Outline>

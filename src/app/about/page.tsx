@@ -16,7 +16,7 @@ export default function AboutPage() {
   return (
     <PressShell>
       <PressPageHead
-        kicker="(05) — The Label"
+        kicker="The Label"
         title={
           <>
             About <Outline>Fever</Outline>

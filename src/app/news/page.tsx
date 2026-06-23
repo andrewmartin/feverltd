@@ -59,7 +59,7 @@ export default async function NewsPage({ searchParams }: PageProps) {
   return (
     <PressShell>
       <PressPageHead
-        kicker="(03) — Dispatches"
+        kicker="Dispatches"
         title={
           <>
             All <Outline>News</Outline>

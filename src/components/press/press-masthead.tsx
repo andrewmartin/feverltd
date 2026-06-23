@@ -18,9 +18,9 @@ export function PressMasthead() {
     <header className="sticky top-0 z-50 border-b-2 border-rule bg-canvas">
       <div className={WRAP}>
         <div className="flex items-center justify-between gap-4 border-b border-hair py-[9px] font-press text-[10.5px] uppercase tracking-[0.18em] text-quiet">
-          <span>Fever LTD — Noise and Culture</span>
+          <span className="whitespace-nowrap">Fever LTD — Noise and Culture</span>
           <div className="flex items-center gap-3.5">
-            <span className="text-fever">Est. 2019</span>
+            <span className="text-fever max-[560px]:hidden">Est. 2019</span>
             <ThemeToggle />
           </div>
         </div>

@@ -11,7 +11,7 @@ export function PressNews({ items }: { items: PressNewsItem[] }) {
   return (
     <section className="border-t border-hair py-[70px]" id="news">
       <div className={WRAP}>
-        <PressSectionHead kicker="(03) — Dispatches" href="/news" label="All news →">
+        <PressSectionHead kicker="Dispatches" href="/news" label="All news →">
           <Outline>News</Outline>
           <span className="text-fever">.</span>
         </PressSectionHead>
