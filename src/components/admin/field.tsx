@@ -6,6 +6,8 @@ type FieldProps = {
   htmlFor: string;
   error?: string;
   hint?: string;
+  /** Native hover tooltip on the label (title attribute). */
+  tooltip?: string;
   required?: boolean;
   className?: string;
   children: React.ReactNode;
@@ -20,13 +22,14 @@ export function Field({
   htmlFor,
   error,
   hint,
+  tooltip,
   required,
   className,
   children,
 }: FieldProps) {
   return (
     <div className={cn("grid gap-2", className)}>
-      <Label htmlFor={htmlFor} data-error={!!error}>
+      <Label htmlFor={htmlFor} data-error={!!error} title={tooltip}>
         {label}
         {required ? <span className="text-destructive"> *</span> : null}
       </Label>

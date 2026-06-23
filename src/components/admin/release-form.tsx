@@ -222,7 +222,8 @@ export function ReleaseForm({ artists, release }: ReleaseFormProps) {
         label="Buy link"
         htmlFor="buyUrl"
         error={errors.buyUrl?.message}
-        hint="Optional — shown as a “Buy” button on the release page."
+        hint="Optional — shown as a “Listen” button on the release page."
+        tooltip="This link is shown as a “Listen” button in the UI."
       >
         <Input
           id="buyUrl"

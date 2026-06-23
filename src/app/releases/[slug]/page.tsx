@@ -212,7 +212,7 @@ export default async function ReleaseDetailPage({ params }: PageProps) {
                   rel="noopener noreferrer"
                   className="mt-8 inline-flex items-center gap-2 border border-fever bg-fever px-7 py-3 font-press text-[11px] uppercase tracking-[0.2em] text-black transition-colors hover:bg-transparent hover:text-fever"
                 >
-                  Buy
+                  Listen
                   <span aria-hidden>↗</span>
                 </a>
               ) : null}
