@@ -6,6 +6,7 @@ import {
   Fraunces,
   Space_Mono,
 } from "next/font/google";
+import NextTopLoader from "nextjs-toploader";
 import { Providers } from "@/components/providers";
 import "./globals.css";
 
@@ -103,6 +104,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${posterDisplay.variable} ${fraunces.variable} ${spaceMono.variable} font-sans antialiased`}
       >
+        <NextTopLoader
+          color="#c6352f"
+          height={3}
+          shadow="0 0 12px #c6352f, 0 0 6px #c6352f"
+          showSpinner={false}
+          crawlSpeed={180}
+          speed={220}
+        />
         <Providers>{children}</Providers>
       </body>
     </html>

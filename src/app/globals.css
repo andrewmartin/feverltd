@@ -204,3 +204,17 @@ body {
     opacity: 0.3;
   }
 }
+
+/* ------------------------------------------------------------------ */
+/* Mobile: stop iOS Safari from auto-zooming when a form control gains  */
+/* focus. The trigger is any control with a font-size below 16px, so we */
+/* floor them at 16px on small screens. Preferred over a viewport       */
+/* `maximum-scale` lock, which would also kill pinch-to-zoom (a11y).    */
+/* ------------------------------------------------------------------ */
+@media (max-width: 640px) {
+  input:not([type="checkbox"]):not([type="radio"]),
+  textarea,
+  select {
+    font-size: 16px;
+  }
+}
