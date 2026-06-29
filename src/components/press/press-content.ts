@@ -16,6 +16,8 @@ export type HeroArtist = {
   loc?: string;
   genre?: string;
   bio?: string;
+  /** Formerly signed but no longer on the label — surfaced as an "Alumni" label. */
+  alumni?: boolean;
 };
 
 export type PressRelease = {

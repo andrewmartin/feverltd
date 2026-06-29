@@ -35,6 +35,7 @@ export function heroArtistsFrom(artists: Artist[]): HeroArtist[] {
         slug: a.slug,
         photo: a.imageUrl as string,
         bio: a.bio ?? undefined,
+        alumni: a.alumni,
       }),
     );
   return usable.length > 0 ? usable : PRESS_HERO_ARTISTS;

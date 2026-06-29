@@ -28,6 +28,7 @@ function rosterCards(artists: Artist[]): Omit<PressArtistCardProps, "index">[] {
       name: a.name,
       slug: a.slug,
       photo: a.imageUrl as string,
+      alumni: a.alumni,
     }));
   if (usable.length > 0) return usable;
   return PRESS_ROSTER.map((a) => ({

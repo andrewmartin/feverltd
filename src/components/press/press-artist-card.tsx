@@ -7,6 +7,8 @@ export type PressArtistCardProps = {
   photo?: string;
   loc?: string;
   genre?: string;
+  /** Formerly signed but no longer on the label — surfaced as an "Alumni" label. */
+  alumni?: boolean;
   /** Zero-based index, for the numbered kicker. */
   index: number;
 };
@@ -24,6 +26,7 @@ export function PressArtistCard({
   photo,
   loc,
   genre,
+  alumni,
   index,
 }: PressArtistCardProps) {
   return (
@@ -48,6 +51,19 @@ export function PressArtistCard({
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_top,rgba(8,7,6,0.82)_0%,rgba(8,7,6,0.2)_46%,rgba(8,7,6,0)_72%)]" />
         <span className="absolute left-3 top-3 z-[2] font-press text-[10px] uppercase tracking-[0.2em] text-[#e8c8c5]">
           {pad(index + 1)}
+        </span>
+        <span className="absolute right-3 top-3 z-[2] flex items-center gap-1.5 font-press text-[9px] uppercase tracking-[0.18em] text-[#f4efe6]">
+          {alumni ? (
+            <>
+              <span className="h-[6px] w-[6px] rounded-full bg-[#e6ddd0]/70" />
+              Alumni
+            </>
+          ) : (
+            <>
+              <span className="h-[6px] w-[6px] animate-pulse-led rounded-full bg-fever [box-shadow:0_0_8px_1px_var(--glow)]" />
+              On the label
+            </>
+          )}
         </span>
         <div className="absolute inset-x-0 bottom-0 z-[2] px-4 pb-[18px]">
           <h2 className="text-balance font-disp text-[clamp(24px,3.4vw,34px)] font-extrabold uppercase leading-[0.9] tracking-[-0.01em] text-[#fbf8f1]">

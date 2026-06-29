@@ -77,8 +77,17 @@ export function PressHero({ artists }: { artists: HeroArtist[] }) {
             </div>
             <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_top,rgba(8,7,6,0.82)_0%,rgba(8,7,6,0.25)_42%,rgba(8,7,6,0)_70%)]" />
             <div className="absolute left-4 top-4 z-[3] flex items-center gap-2 font-press text-[10px] uppercase tracking-[0.2em] text-[#f4efe6]">
-              <span className="h-[7px] w-[7px] animate-pulse-led rounded-full bg-fever [box-shadow:0_0_10px_1px_var(--glow)]" />
-              On the label
+              {a.alumni ? (
+                <>
+                  <span className="h-[7px] w-[7px] rounded-full bg-[#e6ddd0]/70" />
+                  Alumni
+                </>
+              ) : (
+                <>
+                  <span className="h-[7px] w-[7px] animate-pulse-led rounded-full bg-fever [box-shadow:0_0_10px_1px_var(--glow)]" />
+                  On the label
+                </>
+              )}
             </div>
             <div className="absolute inset-x-0 bottom-0 z-[3] px-7 py-[26px]">
               <span className="font-press text-[11px] tracking-[0.18em] text-[#e8c8c5]">
