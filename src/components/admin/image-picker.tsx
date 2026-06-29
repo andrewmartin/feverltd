@@ -6,6 +6,11 @@ import { upload } from "@vercel/blob/client";
 import { ImageIcon, Loader2, UploadCloud, X } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import {
+  MAX_UPLOAD_BYTES,
+  formatBytes,
+  optimizeImage,
+} from "@/lib/optimize-image";
 
 type ImagePickerProps = {
   /** Current image URL (blob or external). */
@@ -33,11 +38,27 @@ export function ImagePicker({
   async function handleFile(file: File) {
     setUploading(true);
     try {
-      const blob = await upload(file.name, file, {
+      const { file: toUpload, optimized } = await optimizeImage(file);
+
+      // Final guard: if it's still over the cap (e.g. a huge GIF we can't
+      // re-encode), block and tell the editor rather than failing on the server.
+      if (toUpload.size > MAX_UPLOAD_BYTES) {
+        toast.error(
+          `This image is ${formatBytes(toUpload.size)} — too large to upload (max 10 MB). Please use a smaller file or a different format.`,
+        );
+        return;
+      }
+
+      const blob = await upload(toUpload.name, toUpload, {
         access: "public",
         handleUploadUrl: "/api/admin/blob/upload",
       });
       onChange(blob.url);
+      if (optimized) {
+        toast.success(
+          `Optimized ${formatBytes(file.size)} → ${formatBytes(toUpload.size)}`,
+        );
+      }
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : "Image upload failed",
@@ -116,7 +137,7 @@ export function ImagePicker({
           ) : null}
         </div>
         <p className="text-muted-foreground text-xs">
-          JPG, PNG, WebP, AVIF or GIF — up to 10 MB.
+          JPG, PNG, WebP, AVIF or GIF. Large images are optimized automatically.
         </p>
       </div>
     </div>
