@@ -13,8 +13,24 @@ export function PressHero({ artists }: { artists: HeroArtist[] }) {
   const [i, setI] = useState(0);
   const total = artists.length;
   const paused = useRef(false);
+  const sectionRef = useRef<HTMLElement>(null);
 
-  const go = (n: number) => setI(((n % total) + total) % total);
+  const go = (n: number) => {
+    setI(((n % total) + total) % total);
+    // On a manual step, pull the stage back into view. On mobile the controls
+    // live below the tall stacked hero, so without this you'd change slides
+    // while scrolled past the photo/name and never see the new act. Only scroll
+    // when the top has slipped under the sticky masthead — leaves desktop alone
+    // when the hero is already fully visible.
+    const el = sectionRef.current;
+    if (!el) return;
+    const header = document.querySelector("header");
+    const offset = header?.getBoundingClientRect().height ?? 0;
+    const top = el.getBoundingClientRect().top;
+    if (top < offset) {
+      window.scrollTo({ top: window.scrollY + top - offset - 12, behavior: "smooth" });
+    }
+  };
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -35,7 +51,7 @@ export function PressHero({ artists }: { artists: HeroArtist[] }) {
   const a = artists[i];
 
   return (
-    <section className="pb-[60px] pt-[52px]">
+    <section ref={sectionRef} className="pb-[60px] pt-[52px]">
       <div className={WRAP}>
         <div className="mb-5 flex items-end justify-between gap-[18px] max-[560px]:flex-col max-[560px]:items-start max-[560px]:gap-3">
           <span className="font-press text-[11px] uppercase tracking-[0.26em] text-fever">
